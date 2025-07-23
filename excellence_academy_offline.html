@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 أكاديمية التميز الدولية - نسخة محمولة</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #7c3aed;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        body.english {
+            direction: ltr;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 60%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            opacity: 0.3;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .language-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .language-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .academy-logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-box h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-box h2 {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+
+        .academy-info {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(124, 58, 237, 0.1));
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            font-size: 0.9em;
+            color: var(--primary-color);
+            border: 1px solid rgba(30, 64, 175, 0.2);
+        }
+
+        .credentials-display {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .credentials-display h4 {
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--success-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .cred-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.75rem 0;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+        }
+
+        .cred-value {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--primary-color);
+            background: rgba(30, 64, 175, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+
+        .form-group {
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group .input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            background: white;
+        }
+
+        .form-group .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .error-msg {
+            background: var(--danger-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: var(--light-bg);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .header-controls {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout-btn, .lang-switcher {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover, .lang-switcher:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card .icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+
+        .stat-card h3 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card p {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .welcome-message {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            margin: 2rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .welcome-message h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-message p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-card .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .success-msg {
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .stat-card h3 {
+                font-size: 2rem;
+            }
+            
+            .login-box {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .academy-logo {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            
+            .header-controls {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="language-toggle" onclick="toggleLoginLanguage()">
+            🌐 <span id="lang-toggle-text">English</span>
+        </div>
+        
+        <div class="login-box">
+            <div class="academy-logo">
+                🏆
+            </div>
+            
+            <h1 id="login-title">أكاديمية التميز الدولية</h1>
+            <h2 id="login-subtitle">Excellence International Academy - نسخة محمولة</h2>
+            
+            <div class="academy-info">
+                <h4 id="academy-info-title">🏆 نسخة محمولة - تعمل بدون إنترنت</h4>
+                <p id="academy-info-text">
+                    أكاديمية التميز الدولية - نحو مستقبل أفضل<br>
+                    Excellence International Academy - Towards a Better Future<br>
+                    🌟 تعليم عالمي متميز | World-Class Education<br>
+                    📚 مناهج دولية معتمدة | Accredited International Curricula<br>
+                    💻 نسخة محمولة تعمل على أي جهاز | Portable version works on any device
+                </p>
+            </div>
+            
+            <div class="credentials-display">
+                <h4>
+                    🔑 <span id="credentials-title">بيانات تسجيل الدخول</span>
+                </h4>
+                <div class="cred-item">
+                    <span id="username-display">👤 اسم المستخدم:</span>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="cred-value">admin</span>
+                        <button class="copy-btn" onclick="copyToClipboard('admin')">
+                            📋
+                        </button>
+                    </div>
+                </div>
+                <div class="cred-item">
+                    <span id="password-display">🔑 كلمة المرور:</span>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="cred-value">123456</span>
+                        <button class="copy-btn" onclick="copyToClipboard('123456')">
+                            📋
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label id="username-label">اسم المستخدم / Username</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" required value="admin">
+                        <span class="input-icon">👤</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label id="password-label">كلمة المرور / Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" required value="123456">
+                        <span class="input-icon">🔑</span>
+                    </div>
+                </div>
+                
+                <div class="error-msg" id="error-msg">
+                    ⚠️ <span id="error-text">اسم المستخدم أو كلمة المرور غير صحيحة</span>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <span id="login-btn-text">تسجيل الدخول / Login</span> ➡️
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div class="header">
+            <div class="header-controls">
+                <button class="logout-btn" onclick="logout()">
+                    🚪 <span id="logout-text">تسجيل الخروج</span>
+                </button>
+                <button class="lang-switcher" onclick="toggleLanguage()">
+                    🌐 <span id="current-lang">العربية</span>
+                </button>
+            </div>
+            <div class="header-content">
+                <h1 id="header-title">🏆 أكاديمية التميز الدولية</h1>
+                <p id="header-subtitle">Excellence International Academy - النسخة المحمولة</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                        👨‍🎓
+                    </div>
+                    <h3 id="total-students">0</h3>
+                    <p id="students-stat-text">إجمالي الطلاب | Total Students</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        👨‍🏫
+                    </div>
+                    <h3 id="total-teachers">0</h3>
+                    <p id="teachers-stat-text">إجمالي المعلمين | Total Teachers</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        🚪
+                    </div>
+                    <h3 id="total-classes">0</h3>
+                    <p id="classes-stat-text">إجمالي الفصول | Total Classes</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                        📁
+                    </div>
+                    <h3 id="total-files">0</h3>
+                    <p id="files-stat-text">إجمالي الملفات | Total Files</p>
+                </div>
+            </div>
+
+            <!-- Welcome Message -->
+            <div class="welcome-message">
+                <h2 id="welcome-title">مرحباً بك في أكاديمية التميز الدولية</h2>
+                <p id="welcome-text">
+                    هذه النسخة المحمولة من نظام إدارة الأكاديمية تعمل بدون الحاجة لإنترنت أو مكتبات خارجية.
+                    يمكنك إدارة الطلاب والمعلمين والفصول بسهولة تامة.
+                </p>
+                <p id="welcome-text-en" style="display: none;">
+                    This portable version of the Academy Management System works without internet or external libraries.
+                    You can easily manage students, teachers, and classes.
+                </p>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                        👨‍🎓
+                    </div>
+                    <h3 id="feature1-title">إدارة الطلاب</h3>
+                    <p id="feature1-text">إضافة وإدارة بيانات الطلاب مع إمكانية رفع الملفات والصور</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        👨‍🏫
+                    </div>
+                    <h3 id="feature2-title">إدارة المعلمين</h3>
+                    <p id="feature2-text">تسجيل المعلمين وإدارة بياناتهم ومؤهلاتهم العلمية</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        🚪
+                    </div>
+                    <h3 id="feature3-title">إدارة الفصول</h3>
+                    <p id="feature3-text">إنشاء الفصول الدراسية وربطها بالمعلمين والطلاب</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                        📊
+                    </div>
+                    <h3 id="feature4-title">التقارير والإحصائيات</h3>
+                    <p id="feature4-text">عرض الإحصائيات والتقارير التفصيلية للأكاديمية</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                        📁
+                    </div>
+                    <h3 id="feature5-title">إدارة الملفات</h3>
+                    <p id="feature5-text">رفع وإدارة الملفات والمستندات الخاصة بالطلاب والمعلمين</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                        💾
+                    </div>
+                    <h3 id="feature6-title">حفظ البيانات</h3>
+                    <p id="feature6-text">حفظ تلقائي للبيانات محلياً مع حماية من فقدان المعلومات</p>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="welcome-message">
+                <h2 id="instructions-title">تعليمات الاستخدام</h2>
+                <div style="text-align: right; line-height: 2;">
+                    <p><strong>🔐 تسجيل الدخول:</strong> استخدم البيانات المعروضة أعلاه</p>
+                    <p><strong>🌐 تغيير اللغة:</strong> انقر على زر اللغة في الزاوية العلوية</p>
+                    <p><strong>📝 إضافة البيانات:</strong> سيتم إضافة النماذج قريباً</p>
+                    <p><strong>💾 حفظ البيانات:</strong> يتم الحفظ تلقائياً في المتصفح</p>
+                    <p><strong>📱 التوافق:</strong> يعمل على جميع الأجهزة والمتصفحات</p>
+                    <p><strong>🔒 الأمان:</strong> جميع البيانات محفوظة محلياً</p>
+                </div>
+            </div>
+
+            <!-- Success/Error Messages Container -->
+            <div id="messages-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables
+        let currentLanguage = 'ar';
+        let academyData = {
+            students: [],
+            teachers: [],
+            classes: [],
+            files: []
+        };
+
+        // Simple Login Credentials
+        const loginCredentials = {
+            username: 'admin',
+            password: '123456'
+        };
+
+        // Initialize System
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSystem();
+            setupEventListeners();
+        });
+
+        function initializeSystem() {
+            loadSavedData();
+            updateStats();
+            setupAutoSave();
+        }
+
+        function loadSavedData() {
+            try {
+                const savedData = localStorage.getItem('excellenceAcademyOfflineData');
+                if (savedData) {
+                    academyData = JSON.parse(savedData);
+                    showSuccess('تم استرجاع البيانات المحفوظة');
+                }
+            } catch (error) {
+                console.error('Error loading saved data:', error);
+            }
+        }
+
+        function setupAutoSave() {
+            setInterval(() => {
+                saveData();
+            }, 30000);
+
+            window.addEventListener('beforeunload', () => {
+                saveData();
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+        }
+
+        // Login Functions
+        function handleLogin(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === loginCredentials.username && password === loginCredentials.password) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                updateStats();
+                showSuccess('مرحباً بك في أكاديمية التميز الدولية!');
+            } else {
+                showError();
+                document.getElementById('password').value = '123456';
+            }
+        }
+
+        function showError() {
+            const errorMsg = document.getElementById('error-msg');
+            errorMsg.style.display = 'block';
+            setTimeout(() => {
+                errorMsg.style.display = 'none';
+            }, 3000);
+        }
+
+        function logout() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = '123456';
+        }
+
+        // Language Functions
+        function toggleLoginLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+        }
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            document.body.className = currentLanguage === 'en' ? 'english' : '';
+            document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+
+            document.getElementById('lang-toggle-text').textContent = currentLanguage === 'ar' ? 'English' : 'العربية';
+            document.getElementById('current-lang').textContent = currentLanguage === 'ar' ? 'العربية' : 'English';
+
+            // Update welcome text
+            if (currentLanguage === 'en') {
+                document.getElementById('welcome-text').style.display = 'none';
+                document.getElementById('welcome-text-en').style.display = 'block';
+                document.getElementById('welcome-title').textContent = 'Welcome to Excellence International Academy';
+                document.getElementById('instructions-title').textContent = 'Usage Instructions';
+            } else {
+                document.getElementById('welcome-text').style.display = 'block';
+                document.getElementById('welcome-text-en').style.display = 'none';
+                document.getElementById('welcome-title').textContent = 'مرحباً بك في أكاديمية التميز الدولية';
+                document.getElementById('instructions-title').textContent = 'تعليمات الاستخدام';
+            }
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showSuccess(`تم نسخ "${text}" إلى الحافظة`);
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showSuccess(`تم نسخ "${text}" إلى الحافظة`);
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Statistics Functions
+        function updateStats() {
+            document.getElementById('total-students').textContent = academyData.students.length;
+            document.getElementById('total-teachers').textContent = academyData.teachers.length;
+            document.getElementById('total-classes').textContent = academyData.classes.length;
+            document.getElementById('total-files').textContent = academyData.files.length;
+        }
+
+        // Data Persistence Functions
+        function saveData() {
+            try {
+                const dataString = JSON.stringify(academyData);
+                localStorage.setItem('excellenceAcademyOfflineData', dataString);
+                localStorage.setItem('excellenceAcademyOfflineData_backup', dataString);
+                return true;
+            } catch (error) {
+                console.error('Error saving data:', error);
+                return false;
+            }
+        }
+
+        function showSuccess(message) {
+            showMessage(message, 'success');
+        }
+
+        function showMessage(message, type) {
+            const container = document.getElementById('messages-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'success-msg';
+
+            const icon = type === 'success' ? '✅' : '⚠️';
+            messageDiv.innerHTML = `
+                ${icon}
+                <span>${message}</span>
+            `;
+
+            container.appendChild(messageDiv);
+
+            setTimeout(() => {
+                if (container.contains(messageDiv)) {
+                    container.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+
+        // Add some demo data
+        function addDemoData() {
+            academyData.students = [
+                {
+                    id: 'STU20240001',
+                    nameAr: 'أحمد محمد علي',
+                    nameEn: 'Ahmed Mohammed Ali',
+                    grade: 'Grade 5',
+                    dateAdded: new Date().toISOString()
+                },
+                {
+                    id: 'STU20240002',
+                    nameAr: 'فاطمة أحمد حسن',
+                    nameEn: 'Fatima Ahmed Hassan',
+                    grade: 'Grade 3',
+                    dateAdded: new Date().toISOString()
+                }
+            ];
+
+            academyData.teachers = [
+                {
+                    id: 'TCH20240001',
+                    nameAr: 'د. محمد عبدالله',
+                    nameEn: 'Dr. Mohammed Abdullah',
+                    subject: 'Mathematics',
+                    dateAdded: new Date().toISOString()
+                }
+            ];
+
+            academyData.classes = [
+                {
+                    id: 'CLS20240001',
+                    name: 'الصف الخامس أ',
+                    level: 'Grade 5',
+                    capacity: 25,
+                    dateAdded: new Date().toISOString()
+                }
+            ];
+
+            updateStats();
+            saveData();
+        }
+
+        // Add demo data after 2 seconds
+        setTimeout(() => {
+            if (academyData.students.length === 0) {
+                addDemoData();
+                showSuccess('تم إضافة بيانات تجريبية للعرض');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
