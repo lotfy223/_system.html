@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تحليل البيانات المتكامل</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <header class="text-center py-6">
+            <h1 class="text-3xl font-bold text-blue-800">نظام تحليل البيانات المتكامل</h1>
+            <p class="text-gray-600 mt-2">لوحة تحكم تفاعلية لتحليل البطاريق والعقارات والإحصائيات</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tabs flex justify-center mb-8 border-b">
+            <button class="tab-btn active px-6 py-3 font-medium" data-tab="penguins">🐧 تحليل البطاريق</button>
+            <button class="tab-btn px-6 py-3 font-medium" data-tab="real-estate">🏠 تحليل العقارات</button>
+            <button class="tab-btn px-6 py-3 font-medium" data-tab="statistics">📊 الإحصائيات الشاملة</button>
+            <button class="tab-btn px-6 py-3 font-medium" data-tab="admin">👑 لوحة التحكم</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Penguin Analysis -->
+            <div id="penguins" class="tab-pane active">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Correlation Heatmap -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">خريطة حرارة تفاعلية لمصفوفة الارتباط</h2>
+                        <canvas id="correlationHeatmap"></canvas>
+                    </div>
+                    
+                    <!-- PCA Analysis -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">تحليل المكونات الأساسية (PCA)</h2>
+                        <canvas id="pcaChart"></canvas>
+                    </div>
+                    
+                    <!-- Length Analysis -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">📏 تحليل الأطوال</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h3 class="font-medium mb-2">إحصائيات Box Plot</h3>
+                                <canvas id="lengthBoxPlot"></canvas>
+                            </div>
+                            <div>
+                                <h3 class="font-medium mb-2">هيستوجرام تفاعلي</h3>
+                                <canvas id="lengthHistogram"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Raw Data -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">عرض البيانات الخام</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200" id="penguinDataTable">
+                                <!-- Data will be populated by JS -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Real Estate Analysis -->
+            <div id="real-estate" class="tab-pane hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Area vs Price Scatter -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">رسم بياني مبعثر لعلاقة المساحة بالسعر</h2>
+                        <canvas id="areaPriceScatter"></canvas>
+                    </div>
+                    
+                    <!-- Price Timeline -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">خط زمني لتطور الأسعار</h2>
+                        <canvas id="priceTimeline"></canvas>
+                    </div>
+                    
+                    <!-- Correlation -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">حساب معامل الارتباط</h2>
+                        <div class="text-center py-4">
+                            <div class="text-4xl font-bold text-green-600" id="correlationValue">0.87</div>
+                            <p class="text-gray-600 mt-2">ارتباط قوي بين المساحة والسعر</p>
+                        </div>
+                    </div>
+                    
+                    <!-- KPIs -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">مؤشرات الأداء الرئيسية</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-center">120</div>
+                                <p class="text-center text-gray-600">عقار متاح</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-center">3.2M</div>
+                                <p class="text-center text-gray-600">متوسط السعر</p>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-center">45 يوم</div>
+                                <p class="text-center text-gray-600">متوسط المدة</p>
+                            </div>
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-center">78%</div>
+                                <p class="text-center text-gray-600">نسبة البيع</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Comprehensive Statistics -->
+            <div id="statistics" class="tab-pane hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Descriptive Statistics -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">إحصائيات وصفية للعينة البشرية</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead>
+                                    <tr>
+                                        <th>المتغير</th>
+                                        <th>المتوسط</th>
+                                        <th>الانحراف المعياري</th>
+                                        <th>الحد الأدنى</th>
+                                        <th>الحد الأقصى</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>العمر</td>
+                                        <td>34.2</td>
+                                        <td>8.7</td>
+                                        <td>18</td>
+                                        <td>65</td>
+                                    </tr>
+                                    <tr>
+                                        <td>الدخل (بالآلاف)</td>
+                                        <td>45.6</td>
+                                        <td>12.3</td>
+                                        <td>15</td>
+                                        <td>120</td>
+                                    </tr>
+                                    <tr>
+                                        <td>حجم الأسرة</td>
+                                        <td>3.8</td>
+                                        <td>1.2</td>
+                                        <td>1</td>
+                                        <td>8</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Interactive Data Table -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">جداول البيانات التفاعلية</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200" id="statsDataTable">
+                                <!-- Data will be populated by JS -->
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Factor Analysis -->
+                    <div class="bg-white p-6 rounded-xl shadow-md md:col-span-2">
+                        <h2 class="text-xl font-bold mb-4 text-blue-700">تحليل عوامل أسعار العقارات</h2>
+                        <canvas id="factorAnalysis"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin Panel -->
+            <div id="admin" class="tab-pane hidden">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 text-blue-700 text-center">👑 لوحة تحكم المشرف</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Image Upload -->
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">رفع الصور</h3>
+                            
+                            <div id="dropZone" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer mb-4 transition-colors hover:border-blue-400">
+                                <p class="text-gray-500">اسحب وأسقط الصور هنا أو</p>
+                                <input type="file" id="imageUpload" class="hidden" accept="image/*" multiple>
+                                <button id="browseBtn" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">تصفح الملفات</button>
+                            </div>
+                            
+                            <div id="previewContainer" class="grid grid-cols-3 gap-2 mt-4"></div>
+                        </div>
+                        
+                        <!-- Background Customization -->
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">تخصيص الخلفيات</h3>
+                            
+                            <div class="mb-4">
+                                <label class="block mb-2 font-medium">خلفية تقرير الغياب:</label>
+                                <select id="bgSelector" class="w-full p-2 border border-gray-300 rounded-md">
+                                    <option value="">اختر صورة...</option>
+                                </select>
+                            </div>
+                            
+                            <button id="applyBgBtn" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">تطبيق الخلفية</button>
+                            
+                            <div class="mt-6">
+                                <h4 class="font-medium mb-2">معاينة الخلفية:</h4>
+                                <div id="bgPreview" class="w-full h-40 border border-gray-300 rounded-md bg-cover bg-center"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
