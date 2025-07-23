@@ -1,0 +1,2475 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 أكاديمية التميز الدولية | Excellence International Academy</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #7c3aed;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --light-bg: #f8fafc;
+            --dark-bg: #1e293b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: 'Cairo', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        body.english {
+            font-family: 'Poppins', 'Cairo', sans-serif;
+            direction: ltr;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/><circle cx="900" cy="800" r="80" fill="url(%23a)"/></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .language-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .language-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .academy-logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .academy-logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        }
+
+        .login-box h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-box h2 {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+
+        .academy-info {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(124, 58, 237, 0.1));
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            font-size: 0.9em;
+            color: var(--primary-color);
+            border: 1px solid rgba(30, 64, 175, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .academy-info h4 {
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .credentials-display {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .credentials-display h4 {
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--success-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .cred-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.75rem 0;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .cred-value {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--primary-color);
+            background: rgba(30, 64, 175, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+
+        .form-group {
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group .input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            background: white;
+        }
+
+        .form-group .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .error-msg {
+            background: var(--danger-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: var(--light-bg);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.05"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .header-controls {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .logout-btn, .lang-switcher {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+        }
+
+        .logout-btn:hover, .lang-switcher:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stat-card .icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin: 0 auto 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card .icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: iconShine 4s infinite;
+        }
+
+        @keyframes iconShine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        }
+
+        .stat-card h3 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card p {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-radius: 16px;
+            padding: 0.5rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-md);
+            flex-wrap: wrap;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            font-weight: 600;
+            min-width: 140px;
+            margin: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .nav-tab:hover {
+            background: var(--light-bg);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin: 2rem 0;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, var(--light-bg), rgba(248, 250, 252, 0.5));
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        /* Enhanced File Upload Area */
+        .file-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: var(--light-bg);
+            margin-top: 0.5rem;
+            position: relative;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(30, 64, 175, 0.1);
+            transform: scale(1.02);
+        }
+
+        .file-upload-area.processing {
+            border-color: var(--warning-color);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .file-upload-icon {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-text {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .file-upload-hint {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .uploaded-files {
+            margin-top: 1rem;
+        }
+
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .uploaded-file:hover {
+            background: var(--light-bg);
+            transform: translateX(5px);
+        }
+
+        .file-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--light-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .file-details {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Analysis Results */
+        .analysis-results {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+        }
+
+        .analysis-title {
+            font-weight: 600;
+            color: var(--success-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .extracted-text {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+
+        .image-analysis {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            margin-top: 0.5rem;
+        }
+
+        .analysis-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .analysis-item:last-child {
+            border-bottom: none;
+        }
+
+        .analysis-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .analysis-value {
+            color: var(--text-secondary);
+        }
+
+        /* Processing Indicator */
+        .processing-indicator {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+            color: var(--warning-color);
+        }
+
+        .processing-indicator.show {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(245, 158, 11, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--warning-color);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--light-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: var(--light-bg);
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .success-msg {
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            background: var(--danger-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Data persistence indicator */
+        .data-status {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--success-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .data-status.show {
+            opacity: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .stat-card h3 {
+                font-size: 2rem;
+            }
+            
+            .login-box {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .academy-logo {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            
+            .header-controls {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .header-controls,
+            .nav-tabs,
+            .btn,
+            .file-upload-area {
+                display: none !important;
+            }
+            
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #000 !important;
+            }
+            
+            body {
+                background: white !important;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="language-toggle" onclick="toggleLoginLanguage()">
+            <i class="fas fa-globe"></i>
+            <span id="lang-toggle-text">English</span>
+        </div>
+
+        <div class="login-box">
+            <div class="academy-logo">
+                <i class="fas fa-trophy"></i>
+            </div>
+
+            <h1 id="login-title">أكاديمية التميز الدولية</h1>
+            <h2 id="login-subtitle">Excellence International Academy System</h2>
+
+            <div class="academy-info">
+                <h4 id="academy-info-title">🏆 معلومات الأكاديمية</h4>
+                <p id="academy-info-text">
+                    أكاديمية التميز الدولية - نحو مستقبل أفضل<br>
+                    Excellence International Academy - Towards a Better Future<br>
+                    🌟 تعليم عالمي متميز | World-Class Education<br>
+                    📚 مناهج دولية معتمدة | Accredited International Curricula<br>
+                    🔍 تحليل الصور والمستندات | Image & Document Analysis<br>
+                    📄 كشف النصوص من PDF | PDF Text Extraction
+                </p>
+            </div>
+
+            <div class="credentials-display">
+                <h4>
+                    <i class="fas fa-key"></i>
+                    <span id="credentials-title">بيانات تسجيل الدخول</span>
+                </h4>
+                <div class="cred-item">
+                    <span id="username-display">👤 اسم المستخدم:</span>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="cred-value">admin</span>
+                        <button class="copy-btn" onclick="copyToClipboard('admin')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="cred-item">
+                    <span id="password-display">🔑 كلمة المرور:</span>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="cred-value">123456</span>
+                        <button class="copy-btn" onclick="copyToClipboard('123456')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label id="username-label">اسم المستخدم / Username</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" required value="admin">
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="password-label">كلمة المرور / Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" required value="123456">
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="error-msg" id="error-msg">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="error-text">اسم المستخدم أو كلمة المرور غير صحيحة</span>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <span id="login-btn-text">تسجيل الدخول / Login</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div class="header">
+            <div class="header-controls">
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span id="logout-text">تسجيل الخروج</span>
+                </button>
+                <button class="lang-switcher" onclick="toggleLanguage()">
+                    <i class="fas fa-globe"></i>
+                    <span id="current-lang">العربية</span>
+                </button>
+            </div>
+            <div class="header-content">
+                <h1 id="header-title">🏆 أكاديمية التميز الدولية</h1>
+                <p id="header-subtitle">Excellence International Academy Management System</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3 id="total-students">0</h3>
+                    <p id="students-stat-text">إجمالي الطلاب | Total Students</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3 id="total-teachers">0</h3>
+                    <p id="teachers-stat-text">إجمالي المعلمين | Total Teachers</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                    <h3 id="total-classes">0</h3>
+                    <p id="classes-stat-text">إجمالي الفصول | Total Classes</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                        <i class="fas fa-file-image"></i>
+                    </div>
+                    <h3 id="total-files">0</h3>
+                    <p id="files-stat-text">إجمالي الملفات | Total Files</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="showTab('overview')">
+                    <i class="fas fa-chart-line"></i>
+                    <span id="nav-overview">نظرة عامة</span>
+                </div>
+                <div class="nav-tab" onclick="showTab('students')">
+                    <i class="fas fa-user-graduate"></i>
+                    <span id="nav-students">الطلاب</span>
+                </div>
+                <div class="nav-tab" onclick="showTab('teachers')">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span id="nav-teachers">المعلمين</span>
+                </div>
+                <div class="nav-tab" onclick="showTab('classes')">
+                    <i class="fas fa-door-open"></i>
+                    <span id="nav-classes">الفصول</span>
+                </div>
+                <div class="nav-tab" onclick="showTab('analysis')">
+                    <i class="fas fa-search"></i>
+                    <span id="nav-analysis">تحليل الملفات</span>
+                </div>
+                <div class="nav-tab" onclick="showTab('reports')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span id="nav-reports">التقارير</span>
+                </div>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-chart-line"></i>
+                            <span id="overview-chart-title">الرسوم البيانية والإحصائيات</span>
+                        </h2>
+                        <p class="card-subtitle" id="overview-chart-subtitle">تحليل شامل لبيانات الأكاديمية</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="overview-chart" style="height: 400px;">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h3 id="no-data-title">لا توجد بيانات للعرض</h3>
+                                <p id="no-data-text">ابدأ بإضافة الطلاب والمعلمين لرؤية الإحصائيات التفاعلية</p>
+                                <button class="btn btn-primary" onclick="showTab('students')">
+                                    <i class="fas fa-plus"></i>
+                                    <span id="start-adding">ابدأ بإضافة البيانات</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Analysis Tab -->
+            <div id="analysis" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-search"></i>
+                            <span id="analysis-title">تحليل الملفات والصور</span>
+                        </h2>
+                        <p class="card-subtitle" id="analysis-subtitle">رفع وتحليل الصور واستخراج النصوص من PDF</p>
+                    </div>
+                    <div class="card-body">
+                        <!-- Image Analysis Section -->
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="margin-bottom: 1rem; color: var(--primary-color);">
+                                <i class="fas fa-image"></i>
+                                تحليل الصور | Image Analysis
+                            </h3>
+                            <div class="file-upload-area" id="image-upload-area">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <div class="file-upload-text">اسحب الصور هنا أو انقر للاختيار</div>
+                                <div class="file-upload-hint">
+                                    يدعم: JPG, PNG, GIF, BMP, WEBP - سيتم تحليل الصورة واستخراج النصوص
+                                </div>
+                                <input type="file" id="image-files" multiple accept="image/*" style="display: none;">
+                            </div>
+
+                            <div class="processing-indicator" id="image-processing">
+                                <div class="spinner"></div>
+                                <span>جاري تحليل الصورة واستخراج النصوص...</span>
+                            </div>
+
+                            <div class="uploaded-files" id="image-uploaded-files"></div>
+                        </div>
+
+                        <!-- PDF Analysis Section -->
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="margin-bottom: 1rem; color: var(--danger-color);">
+                                <i class="fas fa-file-pdf"></i>
+                                تحليل ملفات PDF | PDF Analysis
+                            </h3>
+                            <div class="file-upload-area" id="pdf-upload-area">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div class="file-upload-text">اسحب ملفات PDF هنا أو انقر للاختيار</div>
+                                <div class="file-upload-hint">
+                                    يدعم: PDF - سيتم استخراج النصوص والمعلومات من الملف
+                                </div>
+                                <input type="file" id="pdf-files" multiple accept=".pdf" style="display: none;">
+                            </div>
+
+                            <div class="processing-indicator" id="pdf-processing">
+                                <div class="spinner"></div>
+                                <span>جاري تحليل ملف PDF واستخراج النصوص...</span>
+                            </div>
+
+                            <div class="uploaded-files" id="pdf-uploaded-files"></div>
+                        </div>
+
+                        <!-- Document Analysis Section -->
+                        <div>
+                            <h3 style="margin-bottom: 1rem; color: var(--success-color);">
+                                <i class="fas fa-file-alt"></i>
+                                تحليل المستندات | Document Analysis
+                            </h3>
+                            <div class="file-upload-area" id="document-upload-area">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-file-upload"></i>
+                                </div>
+                                <div class="file-upload-text">اسحب المستندات هنا أو انقر للاختيار</div>
+                                <div class="file-upload-hint">
+                                    يدعم: DOC, DOCX, TXT, RTF - سيتم تحليل المحتوى واستخراج المعلومات
+                                </div>
+                                <input type="file" id="document-files" multiple accept=".doc,.docx,.txt,.rtf" style="display: none;">
+                            </div>
+
+                            <div class="processing-indicator" id="document-processing">
+                                <div class="spinner"></div>
+                                <span>جاري تحليل المستند واستخراج المحتوى...</span>
+                            </div>
+
+                            <div class="uploaded-files" id="document-uploaded-files"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Results -->
+                <div class="card" id="analysis-results-card" style="display: none;">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-analytics"></i>
+                            <span>نتائج التحليل | Analysis Results</span>
+                        </h2>
+                        <p class="card-subtitle">النصوص والمعلومات المستخرجة من الملفات</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="analysis-results-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Tab -->
+            <div id="students" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-user-graduate"></i>
+                            <span id="add-student-title">إضافة طالب جديد</span>
+                        </h2>
+                        <p class="card-subtitle" id="add-student-subtitle">املأ البيانات التالية لإضافة طالب جديد مع إمكانية رفع الصور والملفات</p>
+                    </div>
+                    <div class="card-body">
+                        <form id="student-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label id="student-id-label">رقم الطالب</label>
+                                    <input type="text" id="student-id" required readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-name-ar-label">اسم الطالب (عربي)</label>
+                                    <input type="text" id="student-name-ar" required placeholder="أدخل الاسم بالعربية">
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-name-en-label">اسم الطالب (English)</label>
+                                    <input type="text" id="student-name-en" required placeholder="Enter name in English">
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-grade-label">الصف / Grade</label>
+                                    <select id="student-grade" required>
+                                        <option value="">اختر الصف / Select Grade</option>
+                                        <option value="KG1">KG1 - روضة أولى</option>
+                                        <option value="KG2">KG2 - روضة ثانية</option>
+                                        <option value="Grade 1">Grade 1 - الصف الأول</option>
+                                        <option value="Grade 2">Grade 2 - الصف الثاني</option>
+                                        <option value="Grade 3">Grade 3 - الصف الثالث</option>
+                                        <option value="Grade 4">Grade 4 - الصف الرابع</option>
+                                        <option value="Grade 5">Grade 5 - الصف الخامس</option>
+                                        <option value="Grade 6">Grade 6 - الصف السادس</option>
+                                        <option value="Grade 7">Grade 7 - الصف السابع</option>
+                                        <option value="Grade 8">Grade 8 - الصف الثامن</option>
+                                        <option value="Grade 9">Grade 9 - الصف التاسع</option>
+                                        <option value="Grade 10">Grade 10 - الصف العاشر</option>
+                                        <option value="Grade 11">Grade 11 - الصف الحادي عشر</option>
+                                        <option value="Grade 12">Grade 12 - الصف الثاني عشر</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-birth-label">تاريخ الميلاد / Birth Date</label>
+                                    <input type="date" id="student-birth" required>
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-fees-label">الرسوم السنوية (ريال) / Annual Fees (SAR)</label>
+                                    <input type="number" id="student-fees" step="0.01" required placeholder="15000">
+                                </div>
+                                <div class="form-group">
+                                    <label id="parent-name-label">اسم ولي الأمر / Parent Name</label>
+                                    <input type="text" id="parent-name" required placeholder="اسم الأب أو الأم">
+                                </div>
+                                <div class="form-group">
+                                    <label id="parent-phone-label">هاتف ولي الأمر / Parent Phone</label>
+                                    <input type="tel" id="parent-phone" required placeholder="+966501234567">
+                                </div>
+                            </div>
+
+                            <!-- Enhanced File Upload Section for Student -->
+                            <div class="form-group">
+                                <label id="student-files-label">📁 صورة الطالب والملفات / Student Photo & Files</label>
+                                <div class="file-upload-area" id="student-file-upload">
+                                    <div class="file-upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <div class="file-upload-text" id="student-upload-text">اسحب الملفات هنا أو انقر للاختيار</div>
+                                    <div class="file-upload-hint" id="student-upload-hint">
+                                        يدعم: الصور (JPG, PNG), المستندات (PDF, DOC), سيتم تحليل الصور واستخراج النصوص تلقائياً
+                                    </div>
+                                    <input type="file" id="student-files" multiple accept="image/*,.pdf,.doc,.docx" style="display: none;">
+                                </div>
+                                <div class="uploaded-files" id="student-uploaded-files"></div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                <span id="add-student-btn">إضافة الطالب</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-list"></i>
+                            <span id="students-list-title">قائمة الطلاب</span>
+                        </h2>
+                        <p class="card-subtitle" id="students-list-subtitle">جميع الطلاب المسجلين في الأكاديمية</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="students-list">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <h3 id="no-students-title">لا يوجد طلاب مسجلين</h3>
+                                <p id="no-students-text">ابدأ بإضافة الطلاب باستخدام النموذج أعلاه</p>
+                                <button class="btn btn-primary" onclick="document.getElementById('student-name-ar').focus()">
+                                    <i class="fas fa-plus"></i>
+                                    <span id="add-first-student">إضافة أول طالب</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success/Error Messages Container -->
+            <div id="messages-container"></div>
+        </div>
+    </div>
+
+    <!-- Data Status Indicator -->
+    <div id="data-status" class="data-status">
+        <i class="fas fa-save"></i>
+        <span id="data-status-text">تم حفظ البيانات</span>
+    </div>
+
+    <script>
+        // Global Variables
+        let currentLanguage = 'ar';
+        let academyData = {
+            students: [],
+            teachers: [],
+            classes: [],
+            files: [],
+            analysisResults: []
+        };
+
+        // Simple Login Credentials
+        const loginCredentials = {
+            username: 'admin',
+            password: '123456'
+        };
+
+        // Initialize System
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSystem();
+            setupEventListeners();
+            setupFileAnalysis();
+        });
+
+        function initializeSystem() {
+            loadSavedData();
+            updateStats();
+            generateIds();
+            setupAutoSave();
+        }
+
+        function loadSavedData() {
+            try {
+                const storageKeys = [
+                    'excellenceAcademyData',
+                    'excellenceAcademyData_backup',
+                    'excellenceAcademyData_' + new Date().getFullYear()
+                ];
+
+                let loadedData = null;
+                for (const key of storageKeys) {
+                    const savedData = localStorage.getItem(key);
+                    if (savedData) {
+                        loadedData = JSON.parse(savedData);
+                        break;
+                    }
+                }
+
+                if (loadedData) {
+                    academyData = loadedData;
+                    showDataStatus('تم استرجاع البيانات المحفوظة');
+                }
+            } catch (error) {
+                console.error('Error loading saved data:', error);
+            }
+        }
+
+        function setupAutoSave() {
+            setInterval(() => {
+                saveData();
+            }, 30000);
+
+            window.addEventListener('beforeunload', () => {
+                saveData();
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('student-form').addEventListener('submit', handleAddStudent);
+            setupFileUpload('student-file-upload', 'student-files', 'student-uploaded-files');
+        }
+
+        function setupFileAnalysis() {
+            setupFileUpload('image-upload-area', 'image-files', 'image-uploaded-files', handleImageAnalysis);
+            setupFileUpload('pdf-upload-area', 'pdf-files', 'pdf-uploaded-files', handlePDFAnalysis);
+            setupFileUpload('document-upload-area', 'document-files', 'document-uploaded-files', handleDocumentAnalysis);
+        }
+
+        // Login Functions
+        function handleLogin(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === loginCredentials.username && password === loginCredentials.password) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                updateStats();
+                showSuccess('مرحباً بك في أكاديمية التميز الدولية!');
+            } else {
+                showError();
+                document.getElementById('password').value = '123456';
+            }
+        }
+
+        function showError() {
+            const errorMsg = document.getElementById('error-msg');
+            errorMsg.style.display = 'block';
+            setTimeout(() => {
+                errorMsg.style.display = 'none';
+            }, 3000);
+        }
+
+        function logout() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = '123456';
+        }
+
+        // Language Functions
+        function toggleLoginLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+        }
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            document.body.className = currentLanguage === 'en' ? 'english' : '';
+            document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+
+            document.getElementById('lang-toggle-text').textContent = currentLanguage === 'ar' ? 'English' : 'العربية';
+            document.getElementById('current-lang').textContent = currentLanguage === 'ar' ? 'العربية' : 'English';
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showSuccess(`تم نسخ "${text}" إلى الحافظة`);
+            }).catch(() => {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showSuccess(`تم نسخ "${text}" إلى الحافظة`);
+            });
+        }
+
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            event.target.closest('.nav-tab').classList.add('active');
+
+            if (tabName === 'overview') {
+                updateOverviewChart();
+            } else if (tabName === 'students') {
+                updateStudentsList();
+            }
+        }
+
+        // Enhanced File Analysis Functions
+        async function handleImageAnalysis(files) {
+            const processingIndicator = document.getElementById('image-processing');
+            const uploadArea = document.getElementById('image-upload-area');
+            const resultsContainer = document.getElementById('image-uploaded-files');
+
+            processingIndicator.classList.add('show');
+            uploadArea.classList.add('processing');
+
+            for (const file of files) {
+                try {
+                    const fileData = await readFileAsDataURL(file);
+                    const fileInfo = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: fileData,
+                        uploadDate: new Date().toISOString()
+                    };
+
+                    displayAnalyzedFile(fileInfo, resultsContainer, 'image');
+
+                    // Perform OCR analysis
+                    const ocrResult = await performOCR(file);
+
+                    // Analyze image properties
+                    const imageAnalysis = await analyzeImage(file);
+
+                    const analysisResult = {
+                        id: Date.now() + Math.random(),
+                        fileName: file.name,
+                        fileType: 'image',
+                        extractedText: ocrResult.data.text,
+                        confidence: ocrResult.data.confidence,
+                        imageProperties: imageAnalysis,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    academyData.analysisResults.push(analysisResult);
+                    academyData.files.push(fileInfo);
+
+                    updateFileWithAnalysis(fileInfo, analysisResult, resultsContainer);
+                    showSuccess(`تم تحليل الصورة ${file.name} بنجاح!`);
+
+                } catch (error) {
+                    console.error('Error analyzing image:', error);
+                    showError(`خطأ في تحليل الصورة ${file.name}: ${error.message}`);
+                }
+            }
+
+            processingIndicator.classList.remove('show');
+            uploadArea.classList.remove('processing');
+            updateStats();
+            saveData();
+        }
+
+        async function handlePDFAnalysis(files) {
+            const processingIndicator = document.getElementById('pdf-processing');
+            const uploadArea = document.getElementById('pdf-upload-area');
+            const resultsContainer = document.getElementById('pdf-uploaded-files');
+
+            processingIndicator.classList.add('show');
+            uploadArea.classList.add('processing');
+
+            for (const file of files) {
+                try {
+                    const fileData = await readFileAsDataURL(file);
+                    const fileInfo = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: fileData,
+                        uploadDate: new Date().toISOString()
+                    };
+
+                    displayAnalyzedFile(fileInfo, resultsContainer, 'pdf');
+
+                    const pdfText = await extractTextFromPDF(file);
+                    const pdfAnalysis = await analyzePDF(file);
+
+                    const analysisResult = {
+                        id: Date.now() + Math.random(),
+                        fileName: file.name,
+                        fileType: 'pdf',
+                        extractedText: pdfText,
+                        pdfProperties: pdfAnalysis,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    academyData.analysisResults.push(analysisResult);
+                    academyData.files.push(fileInfo);
+
+                    updateFileWithAnalysis(fileInfo, analysisResult, resultsContainer);
+                    showSuccess(`تم تحليل ملف PDF ${file.name} بنجاح!`);
+
+                } catch (error) {
+                    console.error('Error analyzing PDF:', error);
+                    showError(`خطأ في تحليل ملف PDF ${file.name}: ${error.message}`);
+                }
+            }
+
+            processingIndicator.classList.remove('show');
+            uploadArea.classList.remove('processing');
+            updateStats();
+            saveData();
+        }
+
+        async function handleDocumentAnalysis(files) {
+            const processingIndicator = document.getElementById('document-processing');
+            const uploadArea = document.getElementById('document-upload-area');
+            const resultsContainer = document.getElementById('document-uploaded-files');
+
+            processingIndicator.classList.add('show');
+            uploadArea.classList.add('processing');
+
+            for (const file of files) {
+                try {
+                    const fileData = await readFileAsDataURL(file);
+                    const fileInfo = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: fileData,
+                        uploadDate: new Date().toISOString()
+                    };
+
+                    displayAnalyzedFile(fileInfo, resultsContainer, 'document');
+
+                    const documentText = await extractTextFromDocument(file);
+
+                    const analysisResult = {
+                        id: Date.now() + Math.random(),
+                        fileName: file.name,
+                        fileType: 'document',
+                        extractedText: documentText,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    academyData.analysisResults.push(analysisResult);
+                    academyData.files.push(fileInfo);
+
+                    updateFileWithAnalysis(fileInfo, analysisResult, resultsContainer);
+                    showSuccess(`تم تحليل المستند ${file.name} بنجاح!`);
+
+                } catch (error) {
+                    console.error('Error analyzing document:', error);
+                    showError(`خطأ في تحليل المستند ${file.name}: ${error.message}`);
+                }
+            }
+
+            processingIndicator.classList.remove('show');
+            uploadArea.classList.remove('processing');
+            updateStats();
+            saveData();
+        }
+
+        // Core Analysis Functions
+        async function performOCR(file) {
+            try {
+                const result = await Tesseract.recognize(file, 'ara+eng', {
+                    logger: m => console.log(m)
+                });
+                return result;
+            } catch (error) {
+                console.error('OCR Error:', error);
+                return { data: { text: 'فشل في استخراج النص', confidence: 0 } };
+            }
+        }
+
+        async function extractTextFromPDF(file) {
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                let fullText = '';
+
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    fullText += pageText + '\n';
+                }
+
+                return fullText;
+            } catch (error) {
+                console.error('PDF Text Extraction Error:', error);
+                return 'فشل في استخراج النص من ملف PDF';
+            }
+        }
+
+        async function extractTextFromDocument(file) {
+            try {
+                const text = await file.text();
+                return text;
+            } catch (error) {
+                console.error('Document Text Extraction Error:', error);
+                return 'فشل في استخراج النص من المستند';
+            }
+        }
+
+        async function analyzeImage(file) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = function() {
+                    const analysis = {
+                        width: this.naturalWidth,
+                        height: this.naturalHeight,
+                        aspectRatio: (this.naturalWidth / this.naturalHeight).toFixed(2),
+                        fileSize: formatFileSize(file.size),
+                        format: file.type.split('/')[1].toUpperCase()
+                    };
+                    resolve(analysis);
+                };
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        async function analyzePDF(file) {
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+
+                return {
+                    pages: pdf.numPages,
+                    fileSize: formatFileSize(file.size),
+                    title: pdf.title || 'غير محدد',
+                    author: pdf.author || 'غير محدد',
+                    creationDate: pdf.creationDate || 'غير محدد'
+                };
+            } catch (error) {
+                console.error('PDF Analysis Error:', error);
+                return {
+                    pages: 'غير معروف',
+                    fileSize: formatFileSize(file.size),
+                    title: 'غير محدد',
+                    author: 'غير محدد',
+                    creationDate: 'غير محدد'
+                };
+            }
+        }
+
+        // Display Functions
+        function displayAnalyzedFile(fileInfo, container, type) {
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'uploaded-file';
+            fileDiv.dataset.fileName = fileInfo.name;
+
+            let preview = '';
+            if (type === 'image') {
+                preview = `<img src="${fileInfo.data}" alt="${fileInfo.name}" class="file-preview">`;
+            } else {
+                const icon = getFileIcon(fileInfo.type);
+                preview = `<div class="file-preview"><i class="${icon}"></i></div>`;
+            }
+
+            fileDiv.innerHTML = `
+                ${preview}
+                <div class="file-info">
+                    <div class="file-name">${fileInfo.name}</div>
+                    <div class="file-details">
+                        ${formatFileSize(fileInfo.size)} - ${new Date(fileInfo.uploadDate).toLocaleDateString('ar-SA')}
+                    </div>
+                    <div class="processing-indicator">
+                        <div class="spinner"></div>
+                        <span>جاري التحليل...</span>
+                    </div>
+                </div>
+                <div class="file-actions">
+                    <button class="btn btn-danger btn-sm" onclick="removeUploadedFile(this)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+
+            container.appendChild(fileDiv);
+        }
+
+        function updateFileWithAnalysis(fileInfo, analysisResult, container) {
+            const fileDiv = container.querySelector(`[data-file-name="${fileInfo.name}"]`);
+            if (!fileDiv) return;
+
+            const processingIndicator = fileDiv.querySelector('.processing-indicator');
+            if (processingIndicator) {
+                processingIndicator.remove();
+            }
+
+            const analysisDiv = document.createElement('div');
+            analysisDiv.className = 'analysis-results';
+
+            let analysisHTML = `
+                <div class="analysis-title">
+                    <i class="fas fa-check-circle"></i>
+                    نتائج التحليل
+                </div>
+            `;
+
+            if (analysisResult.extractedText && analysisResult.extractedText.trim()) {
+                analysisHTML += `
+                    <div class="extracted-text">
+                        ${analysisResult.extractedText.substring(0, 200)}${analysisResult.extractedText.length > 200 ? '...' : ''}
+                    </div>
+                `;
+            }
+
+            if (analysisResult.imageProperties) {
+                analysisHTML += `
+                    <div class="image-analysis">
+                        <div class="analysis-item">
+                            <span class="analysis-label">الأبعاد:</span>
+                            <span class="analysis-value">${analysisResult.imageProperties.width} × ${analysisResult.imageProperties.height}</span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="analysis-label">النسبة:</span>
+                            <span class="analysis-value">${analysisResult.imageProperties.aspectRatio}</span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="analysis-label">التنسيق:</span>
+                            <span class="analysis-value">${analysisResult.imageProperties.format}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (analysisResult.pdfProperties) {
+                analysisHTML += `
+                    <div class="image-analysis">
+                        <div class="analysis-item">
+                            <span class="analysis-label">عدد الصفحات:</span>
+                            <span class="analysis-value">${analysisResult.pdfProperties.pages}</span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="analysis-label">العنوان:</span>
+                            <span class="analysis-value">${analysisResult.pdfProperties.title}</span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="analysis-label">المؤلف:</span>
+                            <span class="analysis-value">${analysisResult.pdfProperties.author}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            analysisDiv.innerHTML = analysisHTML;
+            fileDiv.querySelector('.file-info').appendChild(analysisDiv);
+        }
+
+        // File Upload Functions
+        function setupFileUpload(uploadAreaId, inputId, displayAreaId, customHandler) {
+            const uploadArea = document.getElementById(uploadAreaId);
+            const fileInput = document.getElementById(inputId);
+
+            if (!uploadArea || !fileInput) return;
+
+            uploadArea.addEventListener('click', () => fileInput.click());
+
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                if (customHandler) {
+                    customHandler(e.dataTransfer.files);
+                } else {
+                    handleFiles(e.dataTransfer.files, displayAreaId);
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (customHandler) {
+                    customHandler(e.target.files);
+                } else {
+                    handleFiles(e.target.files, displayAreaId);
+                }
+            });
+        }
+
+        function handleFiles(files, displayAreaId) {
+            const displayArea = document.getElementById(displayAreaId);
+            if (!displayArea) return;
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const fileData = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: e.target.result,
+                        uploadDate: new Date().toISOString()
+                    };
+
+                    displayUploadedFile(fileData, displayArea);
+                    academyData.files.push(fileData);
+                    updateStats();
+                    saveData();
+                    showSuccess(`تم رفع الملف: ${file.name}`);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function displayUploadedFile(fileData, container) {
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'uploaded-file';
+
+            let preview = '';
+            if (fileData.type.startsWith('image/')) {
+                preview = `<img src="${fileData.data}" alt="${fileData.name}" class="file-preview">`;
+            } else {
+                const icon = getFileIcon(fileData.type);
+                preview = `<div class="file-preview"><i class="${icon}"></i></div>`;
+            }
+
+            fileDiv.innerHTML = `
+                ${preview}
+                <div class="file-info">
+                    <div class="file-name">${fileData.name}</div>
+                    <div class="file-details">
+                        ${formatFileSize(fileData.size)} - ${new Date(fileData.uploadDate).toLocaleDateString('ar-SA')}
+                    </div>
+                </div>
+                <div class="file-actions">
+                    <button class="btn btn-danger btn-sm" onclick="removeUploadedFile(this)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+
+            fileDiv.dataset.fileData = JSON.stringify(fileData);
+            container.appendChild(fileDiv);
+        }
+
+        // Utility Functions
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function getFileIcon(fileType) {
+            if (fileType.includes('pdf')) return 'fas fa-file-pdf';
+            if (fileType.includes('word') || fileType.includes('document')) return 'fas fa-file-word';
+            if (fileType.includes('excel') || fileType.includes('spreadsheet')) return 'fas fa-file-excel';
+            if (fileType.includes('powerpoint') || fileType.includes('presentation')) return 'fas fa-file-powerpoint';
+            if (fileType.includes('image')) return 'fas fa-file-image';
+            if (fileType.includes('video')) return 'fas fa-file-video';
+            if (fileType.includes('audio')) return 'fas fa-file-audio';
+            return 'fas fa-file';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function removeUploadedFile(button) {
+            const fileDiv = button.closest('.uploaded-file');
+            const fileName = fileDiv.dataset.fileName || fileDiv.querySelector('.file-name').textContent;
+
+            // Remove from academyData.files
+            academyData.files = academyData.files.filter(file => file.name !== fileName);
+
+            // Remove from DOM
+            fileDiv.remove();
+
+            updateStats();
+            saveData();
+            showSuccess(`تم حذف الملف: ${fileName}`);
+        }
+
+        // Student Functions
+        function handleAddStudent(e) {
+            e.preventDefault();
+
+            const studentData = {
+                id: document.getElementById('student-id').value,
+                nameAr: document.getElementById('student-name-ar').value,
+                nameEn: document.getElementById('student-name-en').value,
+                grade: document.getElementById('student-grade').value,
+                birthDate: document.getElementById('student-birth').value,
+                fees: parseFloat(document.getElementById('student-fees').value),
+                parentName: document.getElementById('parent-name').value,
+                parentPhone: document.getElementById('parent-phone').value,
+                files: getUploadedFiles('student-uploaded-files'),
+                dateAdded: new Date().toISOString()
+            };
+
+            academyData.students.push(studentData);
+            saveData();
+            updateStudentsList();
+            updateStats();
+            showSuccess('تم إضافة الطالب بنجاح!');
+            document.getElementById('student-form').reset();
+            generateStudentId();
+            clearUploadedFiles('student-uploaded-files');
+        }
+
+        function updateStudentsList() {
+            const container = document.getElementById('students-list');
+
+            if (academyData.students.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>لا يوجد طلاب مسجلين</h3>
+                        <p>ابدأ بإضافة الطلاب باستخدام النموذج أعلاه</p>
+                        <button class="btn btn-primary" onclick="document.getElementById('student-name-ar').focus()">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة أول طالب</span>
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الطالب</th>
+                            <th>الاسم (عربي)</th>
+                            <th>الاسم (English)</th>
+                            <th>الصف</th>
+                            <th>الرسوم</th>
+                            <th>ولي الأمر</th>
+                            <th>الملفات</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            academyData.students.forEach(student => {
+                html += `
+                    <tr>
+                        <td>${student.id}</td>
+                        <td>${student.nameAr}</td>
+                        <td>${student.nameEn}</td>
+                        <td>${student.grade}</td>
+                        <td>${student.fees.toLocaleString()} ريال</td>
+                        <td>${student.parentName}</td>
+                        <td>
+                            <span class="badge">${student.files?.length || 0} ملف</span>
+                            ${student.files?.length > 0 ? `<button class="btn btn-secondary btn-sm" onclick="viewStudentFiles('${student.id}')"><i class="fas fa-eye"></i></button>` : ''}
+                        </td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" onclick="editStudent('${student.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteStudent('${student.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // ID Generation Functions
+        function generateIds() {
+            generateStudentId();
+        }
+
+        function generateStudentId() {
+            const year = new Date().getFullYear();
+            const count = academyData.students.length + 1;
+            const id = `STU${year}${String(count).padStart(4, '0')}`;
+            const field = document.getElementById('student-id');
+            if (field) field.value = id;
+        }
+
+        // Statistics Functions
+        function updateStats() {
+            document.getElementById('total-students').textContent = academyData.students.length;
+            document.getElementById('total-teachers').textContent = academyData.teachers.length;
+            document.getElementById('total-classes').textContent = academyData.classes.length;
+            document.getElementById('total-files').textContent = academyData.files.length;
+        }
+
+        function updateOverviewChart() {
+            if (academyData.students.length === 0) {
+                return;
+            }
+
+            const gradeData = {};
+            academyData.students.forEach(student => {
+                gradeData[student.grade] = (gradeData[student.grade] || 0) + 1;
+            });
+
+            const data = [{
+                x: Object.keys(gradeData),
+                y: Object.values(gradeData),
+                type: 'bar',
+                marker: {
+                    color: 'rgba(30, 64, 175, 0.8)',
+                    line: {
+                        color: 'rgba(30, 64, 175, 1)',
+                        width: 2
+                    }
+                },
+                name: 'عدد الطلاب'
+            }];
+
+            const layout = {
+                title: {
+                    text: 'توزيع الطلاب حسب الصف',
+                    font: { size: 18, family: 'Cairo, sans-serif' }
+                },
+                xaxis: {
+                    title: 'الصف',
+                    font: { family: 'Cairo, sans-serif' }
+                },
+                yaxis: {
+                    title: 'عدد الطلاب',
+                    font: { family: 'Cairo, sans-serif' }
+                },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: { family: 'Cairo, sans-serif' }
+            };
+
+            Plotly.newPlot('overview-chart', data, layout, {responsive: true});
+        }
+
+        // Data Persistence Functions
+        function saveData() {
+            try {
+                const dataString = JSON.stringify(academyData);
+
+                localStorage.setItem('excellenceAcademyData', dataString);
+                localStorage.setItem('excellenceAcademyData_backup', dataString);
+                localStorage.setItem('excellenceAcademyData_' + new Date().getFullYear(), dataString);
+
+                showDataStatus('تم حفظ البيانات');
+                return true;
+            } catch (error) {
+                console.error('Error saving data:', error);
+                showError('خطأ في حفظ البيانات');
+                return false;
+            }
+        }
+
+        function showDataStatus(message) {
+            const statusDiv = document.getElementById('data-status');
+            statusDiv.textContent = message;
+            statusDiv.classList.add('show');
+
+            setTimeout(() => {
+                statusDiv.classList.remove('show');
+            }, 2000);
+        }
+
+        // Utility Functions
+        function getUploadedFiles(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+
+            const files = [];
+            container.querySelectorAll('.uploaded-file').forEach(fileDiv => {
+                const fileData = JSON.parse(fileDiv.dataset.fileData || '{}');
+                if (fileData.name) {
+                    files.push(fileData);
+                }
+            });
+            return files;
+        }
+
+        function clearUploadedFiles(containerId) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.innerHTML = '';
+            }
+        }
+
+        function deleteStudent(id) {
+            if (confirm('هل أنت متأكد من حذف هذا الطالب؟')) {
+                academyData.students = academyData.students.filter(student => student.id !== id);
+                saveData();
+                updateStudentsList();
+                updateStats();
+                showSuccess('تم حذف الطالب بنجاح');
+            }
+        }
+
+        function editStudent(id) {
+            showMessage('ميزة التعديل قيد التطوير', 'info');
+        }
+
+        function viewStudentFiles(id) {
+            const student = academyData.students.find(s => s.id === id);
+            if (student && student.files) {
+                showFilesModal(student.files, `ملفات الطالب: ${student.nameAr}`);
+            }
+        }
+
+        function showFilesModal(files, title) {
+            let content = `<h3>${title}</h3><div style="display: grid; gap: 1rem;">`;
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    content += `<img src="${file.data}" alt="${file.name}" style="max-width: 200px; border-radius: 8px;">`;
+                } else {
+                    content += `<a href="${file.data}" download="${file.name}" class="btn btn-secondary">${file.name}</a>`;
+                }
+            });
+            content += '</div>';
+
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <html>
+                    <head><title>${title}</title></head>
+                    <body style="font-family: Cairo, sans-serif; padding: 2rem;">
+                        ${content}
+                    </body>
+                </html>
+            `);
+        }
+
+        function showSuccess(message) {
+            showMessage(message, 'success');
+        }
+
+        function showError(message) {
+            showMessage(message, 'error');
+        }
+
+        function showMessage(message, type) {
+            const container = document.getElementById('messages-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'success' ? 'success-msg' : 'error-message';
+
+            const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
+            messageDiv.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(messageDiv);
+
+            setTimeout(() => {
+                if (container.contains(messageDiv)) {
+                    container.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

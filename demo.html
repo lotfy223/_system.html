@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science Educational Platform | منصة تعليم علم البيانات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #fff5f0 0%, #ffe4d6 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5rem;
+        }
+
+        .header h2 {
+            font-size: 1.5em;
+            font-weight: 300;
+        }
+
+        .nav-bar {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            transition: transform 0.2s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #333;
+        }
+
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .language-selector select {
+            background: white;
+            border: 2px solid #ff6b35;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        .content-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .process-step {
+            background: #fff5f0;
+            border-left: 4px solid #ff6b35;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+
+        .visualization-demo {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid #ddd;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .arabic-text {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .english-text {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid #ff6b35;
+        }
+
+        .upload-area {
+            border: 2px dashed #ff6b35;
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+            background: #fff5f0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector">
+        <select id="languageSelect" onchange="changeLanguage()">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 id="mainTitle">Data Science Educational Platform</h1>
+            <h2 id="subtitle">Interactive Learning Experience</h2>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-bar">
+            <button class="nav-btn active" onclick="showSection('home')" id="navHome">🏠 Home</button>
+            <button class="nav-btn" onclick="showSection('visuals')" id="navVisuals">📊 Visualizations</button>
+            <button class="nav-btn" onclick="showSection('upload')" id="navUpload">📤 Upload Images</button>
+            <button class="nav-btn" onclick="showSection('about')" id="navAbout">ℹ️ About</button>
+        </div>
+
+        <!-- Home Section -->
+        <div id="home" class="content-section active">
+            <div id="homeContent">
+                <h2>📊 What is Data Science?</h2>
+                <p style="font-size: 1.2em; margin: 1rem 0;">
+                    Data Science is a multidisciplinary field that uses scientific methods, processes, algorithms, and tools to extract knowledge and insights from structured and unstructured data.
+                </p>
+                
+                <h2>🔄 Data Science Process</h2>
+                <div class="process-step">
+                    <h4>1. Define the Problem</h4>
+                </div>
+                <div class="process-step">
+                    <h4>2. Get Data (from Lakehouse)</h4>
+                </div>
+                <div class="process-step">
+                    <h4>3. Prepare/Clean Data</h4>
+                </div>
+                <div class="process-step">
+                    <h4>4. Train Models</h4>
+                </div>
+                <div class="process-step">
+                    <h4>5. Generate Insights</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualizations Section -->
+        <div id="visuals" class="content-section">
+            <h2 id="visualsTitle">📊 Data Science Visualizations</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3 id="corrTitle">🔥 Correlation Heatmap</h3>
+                    <p id="corrDesc">Shows correlations between variables in the penguins dataset. Darker colors indicate stronger correlations.</p>
+                    <div class="code-block">
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+penguins = pd.read_csv('penguins.csv')
+corr = penguins.corr()
+sns.heatmap(corr, annot=True)
+plt.show()
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 id="pcaTitle">🎯 PCA Dimensionality Reduction</h3>
+                    <p id="pcaDesc">Principal Component Analysis reduces data dimensions while preserving most variance.</p>
+                    <div class="code-block">
+from sklearn.decomposition import PCA
+penguins = penguins.dropna()
+X = penguins.drop('Species', axis=1)
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X)
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 id="boxTitle">📦 Box Plot & Histogram</h3>
+                    <p id="boxDesc">Box plots show data distribution including median, quartiles, and outliers.</p>
+                    <div class="code-block">
+heights = [63, 64, 66, 67, 68, 69, 71, 72, 73, 55, 75]
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+plt.boxplot(heights)
+plt.subplot(1, 2, 2)
+plt.hist(heights, bins=8)
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 id="scatterTitle">🏠 House Size vs Price</h3>
+                    <p id="scatterDesc">Scatter plot showing the relationship between house size and price.</p>
+                    <div class="code-block">
+house_sizes = np.random.randint(1000, 3000, 50)
+house_prices = house_sizes * 100 + noise
+plt.scatter(house_sizes, house_prices)
+plt.xlabel('House Size (sq ft)')
+plt.ylabel('House Price ($)')
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 id="lineTitle">📈 House Prices Over Time</h3>
+                    <p id="lineDesc">Line chart showing house price trends from 2020 to 2022.</p>
+                    <div class="code-block">
+dates = pd.date_range('2020-01-01', '2022-12-31', freq='M')
+prices = base_price + trend + seasonal + noise
+plt.plot(dates, prices, marker='o')
+plt.xlabel('Date')
+plt.ylabel('Price ($)')
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 id="pairTitle">🔗 Pairplot Analysis</h3>
+                    <p id="pairDesc">Shows relationships between all pairs of variables in the dataset.</p>
+                    <div class="code-block">
+import seaborn as sns
+sns.pairplot(df)
+plt.show()
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div id="upload" class="content-section">
+            <h2 id="uploadTitle">📤 Upload Images</h2>
+            <p id="uploadDesc">Upload your images for analysis or documentation</p>
+
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <h4>📁 Drag & Drop Area</h4>
+                <p id="dragText">Click here to select images or drag and drop</p>
+                <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="handleFiles(this.files)">
+            </div>
+
+            <div id="imagePreview" class="grid" style="margin-top: 2rem;"></div>
+        </div>
+
+        <!-- About Section -->
+        <div id="about" class="content-section">
+            <h2 id="aboutTitle">ℹ️ About the Platform</h2>
+            <div id="aboutContent">
+                <p>This is an interactive educational platform for Data Science that aims to:</p>
+                <ul style="margin: 1rem 0; padding-left: 2rem;">
+                    <li>Teach fundamental Data Science concepts</li>
+                    <li>Showcase different data visualizations</li>
+                    <li>Provide practical examples with code</li>
+                    <li>Support both Arabic and English languages</li>
+                </ul>
+
+                <h3>🛠️ Technologies Used</h3>
+                <ul style="margin: 1rem 0; padding-left: 2rem;">
+                    <li>🐍 Python</li>
+                    <li>📊 Streamlit</li>
+                    <li>🐼 Pandas</li>
+                    <li>📈 Matplotlib & Seaborn</li>
+                    <li>🤖 Scikit-learn</li>
+                    <li>🎨 CSS for styling</li>
+                </ul>
+
+                <h3>✨ Features</h3>
+                <ul style="margin: 1rem 0; padding-left: 2rem;">
+                    <li>✅ Bilingual interface</li>
+                    <li>✅ Interactive data visualizations</li>
+                    <li>✅ Executable code examples</li>
+                    <li>✅ Image upload functionality</li>
+                    <li>✅ Responsive design</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #fff5f0; border-radius: 10px;">
+                <h4>📧 Contact</h4>
+                <p>For questions or suggestions</p>
+                <p>📧 contact@datascience-edu.com</p>
+            </div>
+        </div>
+
+        <!-- Streamlit Instructions -->
+        <div style="background: #e8f4fd; border: 2px solid #3498db; border-radius: 10px; padding: 2rem; margin: 2rem 0;">
+            <h3>🚀 Run Full Interactive Version</h3>
+            <p>This is a demo version. For the full interactive experience with real data visualizations:</p>
+            <ol style="margin: 1rem 0; padding-left: 2rem;">
+                <li>Install Python 3.8+ on your system</li>
+                <li>Open terminal/command prompt in this folder</li>
+                <li>Run: <code style="background: #333; color: white; padding: 0.2rem 0.5rem; border-radius: 3px;">pip install -r requirements.txt</code></li>
+                <li>Run: <code style="background: #333; color: white; padding: 0.2rem 0.5rem; border-radius: 3px;">streamlit run app.py</code></li>
+                <li>Open the URL shown in terminal (usually http://localhost:8501)</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                mainTitle: "Data Science Educational Platform",
+                subtitle: "Interactive Learning Experience",
+                navHome: "🏠 Home",
+                navVisuals: "📊 Visualizations",
+                navUpload: "📤 Upload Images",
+                navAbout: "ℹ️ About",
+                homeTitle: "📊 What is Data Science?",
+                homeDesc: "Data Science is a multidisciplinary field that uses scientific methods, processes, algorithms, and tools to extract knowledge and insights from structured and unstructured data.",
+                processTitle: "🔄 Data Science Process",
+                step1: "1. Define the Problem",
+                step2: "2. Get Data (from Lakehouse)",
+                step3: "3. Prepare/Clean Data",
+                step4: "4. Train Models",
+                step5: "5. Generate Insights",
+                visualsTitle: "📊 Data Science Visualizations",
+                corrTitle: "🔥 Correlation Heatmap",
+                corrDesc: "Shows correlations between variables in the penguins dataset. Darker colors indicate stronger correlations.",
+                pcaTitle: "🎯 PCA Dimensionality Reduction",
+                pcaDesc: "Principal Component Analysis reduces data dimensions while preserving most variance.",
+                boxTitle: "📦 Box Plot & Histogram",
+                boxDesc: "Box plots show data distribution including median, quartiles, and outliers.",
+                scatterTitle: "🏠 House Size vs Price",
+                scatterDesc: "Scatter plot showing the relationship between house size and price.",
+                lineTitle: "📈 House Prices Over Time",
+                lineDesc: "Line chart showing house price trends from 2020 to 2022.",
+                pairTitle: "🔗 Pairplot Analysis",
+                pairDesc: "Shows relationships between all pairs of variables in the dataset.",
+                uploadTitle: "📤 Upload Images",
+                uploadDesc: "Upload your images for analysis or documentation",
+                dragText: "Click here to select images or drag and drop",
+                aboutTitle: "ℹ️ About the Platform"
+            },
+            ar: {
+                mainTitle: "منصة تعليم علم البيانات",
+                subtitle: "تجربة تعلم تفاعلية",
+                navHome: "🏠 الرئيسية",
+                navVisuals: "📊 التصورات البيانية",
+                navUpload: "📤 رفع الصور",
+                navAbout: "ℹ️ حول",
+                homeTitle: "📊 ما هو علم البيانات؟",
+                homeDesc: "علم البيانات هو مجال متعدد التخصصات يستخدم الأساليب والعمليات والخوارزميات والأدوات العلمية لاستخراج المعرفة والرؤى من البيانات المنظمة وغير المنظمة.",
+                processTitle: "🔄 عملية علم البيانات",
+                step1: "١. تحديد المشكلة",
+                step2: "٢. الحصول على البيانات (من مستودع البيانات)",
+                step3: "٣. تحضير وتنظيف البيانات",
+                step4: "٤. تدريب النماذج",
+                step5: "٥. توليد الرؤى",
+                visualsTitle: "📊 التصورات البيانية لعلم البيانات",
+                corrTitle: "🔥 خريطة الارتباط الحرارية",
+                corrDesc: "يُظهر الارتباط بين المتغيرات في بيانات البطاريق. الألوان الداكنة تشير إلى ارتباطات أقوى.",
+                pcaTitle: "🎯 تقليل الأبعاد باستخدام PCA",
+                pcaDesc: "تحليل المكونات الرئيسية يقلل من أبعاد البيانات مع الحفاظ على معظم التباين.",
+                boxTitle: "📦 مخطط الصندوق والرسم البياني",
+                boxDesc: "مخططات الصندوق تُظهر توزيع البيانات بما في ذلك الوسيط والأرباع والقيم الشاذة.",
+                scatterTitle: "🏠 حجم المنزل مقابل السعر",
+                scatterDesc: "مخطط مبعثر يُظهر العلاقة بين حجم المنزل والسعر.",
+                lineTitle: "📈 أسعار المنازل عبر الزمن",
+                lineDesc: "مخطط خطي يُظهر اتجاهات أسعار المنازل من ٢٠٢٠ إلى ٢٠٢٢.",
+                pairTitle: "🔗 تحليل المخططات المزدوجة",
+                pairDesc: "يُظهر العلاقات بين جميع أزواج المتغيرات في مجموعة البيانات.",
+                uploadTitle: "📤 رفع الصور",
+                uploadDesc: "ارفع صورك للتحليل أو التوثيق",
+                dragText: "انقر هنا لاختيار الصور أو اسحب وأفلت",
+                aboutTitle: "ℹ️ حول المنصة"
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function changeLanguage() {
+            const select = document.getElementById('languageSelect');
+            currentLanguage = select.value;
+            updateContent();
+        }
+
+        function updateContent() {
+            const t = translations[currentLanguage];
+            const isArabic = currentLanguage === 'ar';
+
+            // Update text content
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+
+            // Update direction and text alignment
+            document.body.dir = isArabic ? 'rtl' : 'ltr';
+
+            // Update home content
+            const homeContent = document.getElementById('homeContent');
+            if (isArabic) {
+                homeContent.className = 'arabic-text';
+                homeContent.innerHTML = `
+                    <h2>📊 ما هو علم البيانات؟</h2>
+                    <p style="font-size: 1.2em; margin: 1rem 0;">
+                        علم البيانات هو مجال متعدد التخصصات يستخدم الأساليب والعمليات والخوارزميات والأدوات العلمية لاستخراج المعرفة والرؤى من البيانات المنظمة وغير المنظمة.
+                    </p>
+
+                    <h2>🔄 عملية علم البيانات</h2>
+                    <div class="process-step">
+                        <h4>١. تحديد المشكلة</h4>
+                    </div>
+                    <div class="process-step">
+                        <h4>٢. الحصول على البيانات (من مستودع البيانات)</h4>
+                    </div>
+                    <div class="process-step">
+                        <h4>٣. تحضير وتنظيف البيانات</h4>
+                    </div>
+                    <div class="process-step">
+                        <h4>٤. تدريب النماذج</h4>
+                    </div>
+                    <div class="process-step">
+                        <h4>٥. توليد الرؤى</h4>
+                    </div>
+                `;
+            } else {
+                homeContent.className = 'english-text';
+                homeContent.innerHTML = `
+                    <h2>📊 What is Data Science?</h2>
+                    <p style="font-size: 1.2em; margin: 1rem 0;">
+                        Data Science is a multidisciplinary field that uses scientific methods, processes, algorithms, and tools to extract knowledge and insights from structured and unstructured data.
+                    </p>
+
+                    <h2>🔄 Data Science Process</h2>
+                    <div class="process-step">
+                        <h4>1. Define the Problem</h4>
+                    </div>
+                    <div class="process-step">
+                        <h4>2. Get Data (from Lakehouse)</h4>
+                    </div>
+                    <div class="process-step">
+                        <h4>3. Prepare/Clean Data</h4>
+                    </div>
+                    <div class="process-step">
+                        <h4>4. Train Models</h4>
+                    </div>
+                    <div class="process-step">
+                        <h4>5. Generate Insights</h4>
+                    </div>
+                `;
+            }
+
+            // Update about content
+            const aboutContent = document.getElementById('aboutContent');
+            if (isArabic) {
+                aboutContent.className = 'arabic-text';
+                aboutContent.innerHTML = `
+                    <p>هذه منصة تعليمية تفاعلية لعلم البيانات تهدف إلى:</p>
+                    <ul style="margin: 1rem 0; padding-right: 2rem;">
+                        <li>تعليم مفاهيم علم البيانات الأساسية</li>
+                        <li>عرض التصورات البيانية المختلفة</li>
+                        <li>توفير أمثلة عملية بالكود</li>
+                        <li>دعم اللغتين العربية والإنجليزية</li>
+                    </ul>
+
+                    <h3>🛠️ التقنيات المستخدمة</h3>
+                    <ul style="margin: 1rem 0; padding-right: 2rem;">
+                        <li>🐍 Python</li>
+                        <li>📊 Streamlit</li>
+                        <li>🐼 Pandas</li>
+                        <li>📈 Matplotlib & Seaborn</li>
+                        <li>🤖 Scikit-learn</li>
+                        <li>🎨 CSS للتصميم</li>
+                    </ul>
+
+                    <h3>✨ الميزات</h3>
+                    <ul style="margin: 1rem 0; padding-right: 2rem;">
+                        <li>✅ واجهة ثنائية اللغة</li>
+                        <li>✅ تصورات بيانية تفاعلية</li>
+                        <li>✅ أمثلة كود قابلة للتنفيذ</li>
+                        <li>✅ وظيفة رفع الصور</li>
+                        <li>✅ تصميم متجاوب</li>
+                    </ul>
+                `;
+            } else {
+                aboutContent.className = 'english-text';
+                aboutContent.innerHTML = `
+                    <p>This is an interactive educational platform for Data Science that aims to:</p>
+                    <ul style="margin: 1rem 0; padding-left: 2rem;">
+                        <li>Teach fundamental Data Science concepts</li>
+                        <li>Showcase different data visualizations</li>
+                        <li>Provide practical examples with code</li>
+                        <li>Support both Arabic and English languages</li>
+                    </ul>
+
+                    <h3>🛠️ Technologies Used</h3>
+                    <ul style="margin: 1rem 0; padding-left: 2rem;">
+                        <li>🐍 Python</li>
+                        <li>📊 Streamlit</li>
+                        <li>🐼 Pandas</li>
+                        <li>📈 Matplotlib & Seaborn</li>
+                        <li>🤖 Scikit-learn</li>
+                        <li>🎨 CSS for styling</li>
+                    </ul>
+
+                    <h3>✨ Features</h3>
+                    <ul style="margin: 1rem 0; padding-left: 2rem;">
+                        <li>✅ Bilingual interface</li>
+                        <li>✅ Interactive data visualizations</li>
+                        <li>✅ Executable code examples</li>
+                        <li>✅ Image upload functionality</li>
+                        <li>✅ Responsive design</li>
+                    </ul>
+                `;
+            }
+        }
+
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Remove active class from all nav buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function handleFiles(files) {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const div = document.createElement('div');
+                        div.className = 'card';
+                        div.innerHTML = `
+                            <img src="${e.target.result}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 5px;">
+                            <h4 style="margin-top: 1rem;">${file.name}</h4>
+                            <p>Size: ${(file.size / 1024).toFixed(1)} KB</p>
+                            <p>Type: ${file.type}</p>
+                        `;
+                        preview.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Initialize
+        updateContent();
+    </script>
+</body>
+</html>

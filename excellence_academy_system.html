@@ -1,0 +1,3109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 أكاديمية التميز الدولية | Excellence International Academy</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #7c3aed;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --light-bg: #f8fafc;
+            --dark-bg: #1e293b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: 'Cairo', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        body.english {
+            font-family: 'Poppins', 'Cairo', sans-serif;
+            direction: ltr;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/><circle cx="900" cy="800" r="80" fill="url(%23a)"/></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .language-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .language-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .academy-logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .academy-logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        }
+
+        .login-box h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-box h2 {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+
+        .academy-info {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(124, 58, 237, 0.1));
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            font-size: 0.9em;
+            color: var(--primary-color);
+            border: 1px solid rgba(30, 64, 175, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .academy-info h4 {
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .credentials-display {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .credentials-display h4 {
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--success-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .cred-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.75rem 0;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .cred-value {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--primary-color);
+            background: rgba(30, 64, 175, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+
+        .form-group {
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group .input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            background: white;
+        }
+
+        .form-group .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .error-msg {
+            background: var(--danger-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: var(--light-bg);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.05"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .header-controls {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .lang-switcher {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+        }
+
+        .lang-switcher:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stat-card .icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin: 0 auto 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card .icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: iconShine 4s infinite;
+        }
+
+        @keyframes iconShine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        }
+
+        .stat-card h3 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card p {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-radius: 16px;
+            padding: 0.5rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-md);
+            flex-wrap: wrap;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            font-weight: 600;
+            min-width: 140px;
+            margin: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .nav-tab:hover {
+            background: var(--light-bg);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin: 2rem 0;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, var(--light-bg), rgba(248, 250, 252, 0.5));
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .file-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: var(--light-bg);
+            margin-top: 0.5rem;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(30, 64, 175, 0.1);
+        }
+
+        .file-upload-icon {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-text {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .file-upload-hint {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .uploaded-files {
+            margin-top: 1rem;
+        }
+
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .uploaded-file:hover {
+            background: var(--light-bg);
+        }
+
+        .file-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--light-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--light-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: var(--light-bg);
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .success-msg {
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            background: var(--danger-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .stat-card h3 {
+                font-size: 2rem;
+            }
+            
+            .login-box {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .academy-logo {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            
+            .header-controls {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .header-controls,
+            .nav-tabs,
+            .btn,
+            .file-upload-area {
+                display: none !important;
+            }
+            
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #000 !important;
+            }
+            
+            body {
+                background: white !important;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Data persistence indicator */
+        .data-status {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--success-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .data-status.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="language-toggle" onclick="toggleLoginLanguage()">
+            <i class="fas fa-globe"></i>
+            <span id="lang-toggle-text">English</span>
+        </div>
+
+        <div class="login-box">
+            <div class="academy-logo">
+                <i class="fas fa-trophy"></i>
+            </div>
+
+            <h1 id="login-title">أكاديمية التميز الدولية</h1>
+            <h2 id="login-subtitle">Excellence International Academy System</h2>
+
+            <div class="academy-info">
+                <h4 id="academy-info-title">🏆 معلومات الأكاديمية</h4>
+                <p id="academy-info-text">
+                    أكاديمية التميز الدولية - نحو مستقبل أفضل<br>
+                    Excellence International Academy - Towards a Better Future<br>
+                    🌟 تعليم عالمي متميز | World-Class Education<br>
+                    📚 مناهج دولية معتمدة | Accredited International Curricula
+                </p>
+            </div>
+
+            <div class="credentials-display">
+                <h4>
+                    <i class="fas fa-key"></i>
+                    <span id="credentials-title">بيانات تسجيل الدخول</span>
+                </h4>
+                <div class="cred-item">
+                    <span id="username-display">👤 اسم المستخدم:</span>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="cred-value">excellence_admin</span>
+                        <button class="copy-btn" onclick="copyToClipboard('excellence_admin')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="cred-item">
+                    <span id="password-display">🔑 كلمة المرور:</span>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="cred-value">Excellence@2024</span>
+                        <button class="copy-btn" onclick="copyToClipboard('Excellence@2024')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label id="username-label">اسم المستخدم / Username</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" required value="excellence_admin">
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="password-label">كلمة المرور / Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" required value="Excellence@2024">
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="error-msg" id="error-msg">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="error-text">اسم المستخدم أو كلمة المرور غير صحيحة</span>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <span id="login-btn-text">تسجيل الدخول / Login</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div class="header">
+            <div class="header-controls">
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span id="logout-text">تسجيل الخروج</span>
+                </button>
+                <button class="lang-switcher" onclick="toggleLanguage()">
+                    <i class="fas fa-globe"></i>
+                    <span id="current-lang">العربية</span>
+                </button>
+            </div>
+            <div class="header-content">
+                <h1 id="header-title">🏆 أكاديمية التميز الدولية</h1>
+                <p id="header-subtitle">Excellence International Academy Management System</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3 id="total-students">0</h3>
+                    <p id="students-stat-text">إجمالي الطلاب | Total Students</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3 id="total-teachers">0</h3>
+                    <p id="teachers-stat-text">إجمالي المعلمين | Total Teachers</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                    <h3 id="total-classes">0</h3>
+                    <p id="classes-stat-text">إجمالي الفصول | Total Classes</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 id="total-revenue">0 ريال</h3>
+                    <p id="revenue-stat-text">إجمالي الإيرادات | Total Revenue</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="showTab('overview')">
+                    <i class="fas fa-chart-line"></i>
+                    <span id="nav-overview">نظرة عامة</span>
+                </div>
+                <div class="nav-tab" onclick="showTab('students')">
+                    <i class="fas fa-user-graduate"></i>
+                    <span id="nav-students">الطلاب</span>
+                </div>
+                <div class="nav-tab" onclick="showTab('teachers')">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span id="nav-teachers">المعلمين</span>
+                </div>
+                <div class="nav-tab" onclick="showTab('classes')">
+                    <i class="fas fa-door-open"></i>
+                    <span id="nav-classes">الفصول</span>
+                </div>
+                <div class="nav-tab" onclick="showTab('files')">
+                    <i class="fas fa-folder-open"></i>
+                    <span id="nav-files">الملفات</span>
+                </div>
+                <div class="nav-tab" onclick="showTab('reports')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span id="nav-reports">التقارير</span>
+                </div>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-chart-line"></i>
+                            <span id="overview-chart-title">الرسوم البيانية والإحصائيات</span>
+                        </h2>
+                        <p class="card-subtitle" id="overview-chart-subtitle">تحليل شامل لبيانات الأكاديمية</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="overview-chart" style="height: 400px;">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h3 id="no-data-title">لا توجد بيانات للعرض</h3>
+                                <p id="no-data-text">ابدأ بإضافة الطلاب والمعلمين لرؤية الإحصائيات التفاعلية</p>
+                                <button class="btn btn-primary" onclick="showTab('students')">
+                                    <i class="fas fa-plus"></i>
+                                    <span id="start-adding">ابدأ بإضافة البيانات</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Tab -->
+            <div id="students" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-user-graduate"></i>
+                            <span id="add-student-title">إضافة طالب جديد</span>
+                        </h2>
+                        <p class="card-subtitle" id="add-student-subtitle">املأ البيانات التالية لإضافة طالب جديد مع إمكانية رفع الصور والملفات</p>
+                    </div>
+                    <div class="card-body">
+                        <form id="student-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label id="student-id-label">رقم الطالب</label>
+                                    <input type="text" id="student-id" required readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-name-ar-label">اسم الطالب (عربي)</label>
+                                    <input type="text" id="student-name-ar" required placeholder="أدخل الاسم بالعربية">
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-name-en-label">اسم الطالب (English)</label>
+                                    <input type="text" id="student-name-en" required placeholder="Enter name in English">
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-grade-label">الصف / Grade</label>
+                                    <select id="student-grade" required>
+                                        <option value="">اختر الصف / Select Grade</option>
+                                        <option value="KG1">KG1 - روضة أولى</option>
+                                        <option value="KG2">KG2 - روضة ثانية</option>
+                                        <option value="Grade 1">Grade 1 - الصف الأول</option>
+                                        <option value="Grade 2">Grade 2 - الصف الثاني</option>
+                                        <option value="Grade 3">Grade 3 - الصف الثالث</option>
+                                        <option value="Grade 4">Grade 4 - الصف الرابع</option>
+                                        <option value="Grade 5">Grade 5 - الصف الخامس</option>
+                                        <option value="Grade 6">Grade 6 - الصف السادس</option>
+                                        <option value="Grade 7">Grade 7 - الصف السابع</option>
+                                        <option value="Grade 8">Grade 8 - الصف الثامن</option>
+                                        <option value="Grade 9">Grade 9 - الصف التاسع</option>
+                                        <option value="Grade 10">Grade 10 - الصف العاشر</option>
+                                        <option value="Grade 11">Grade 11 - الصف الحادي عشر</option>
+                                        <option value="Grade 12">Grade 12 - الصف الثاني عشر</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-birth-label">تاريخ الميلاد / Birth Date</label>
+                                    <input type="date" id="student-birth" required>
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-nationality-label">الجنسية / Nationality</label>
+                                    <input type="text" id="student-nationality" required placeholder="السعودية / Saudi Arabia">
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-fees-label">الرسوم السنوية (ريال) / Annual Fees (SAR)</label>
+                                    <input type="number" id="student-fees" step="0.01" required placeholder="15000">
+                                </div>
+                                <div class="form-group">
+                                    <label id="parent-name-label">اسم ولي الأمر / Parent Name</label>
+                                    <input type="text" id="parent-name" required placeholder="اسم الأب أو الأم">
+                                </div>
+                                <div class="form-group">
+                                    <label id="parent-phone-label">هاتف ولي الأمر / Parent Phone</label>
+                                    <input type="tel" id="parent-phone" required placeholder="+966501234567">
+                                </div>
+                                <div class="form-group">
+                                    <label id="parent-email-label">بريد ولي الأمر / Parent Email</label>
+                                    <input type="email" id="parent-email" placeholder="parent@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-address-label">العنوان / Address</label>
+                                    <textarea id="student-address" rows="3" placeholder="العنوان الكامل مع المدينة"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label id="student-notes-label">ملاحظات / Notes</label>
+                                    <textarea id="student-notes" rows="2" placeholder="أي ملاحظات إضافية"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- File Upload Section for Student -->
+                            <div class="form-group">
+                                <label id="student-files-label">📁 صورة الطالب والملفات / Student Photo & Files</label>
+                                <div class="file-upload-area" id="student-file-upload">
+                                    <div class="file-upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <div class="file-upload-text" id="student-upload-text">اسحب الملفات هنا أو انقر للاختيار</div>
+                                    <div class="file-upload-hint" id="student-upload-hint">
+                                        يدعم: الصور (JPG, PNG), المستندات (PDF, DOC), جداول البيانات (Excel)
+                                    </div>
+                                    <input type="file" id="student-files" multiple accept="image/*,.pdf,.doc,.docx,.xlsx,.xls" style="display: none;">
+                                </div>
+                                <div class="uploaded-files" id="student-uploaded-files"></div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                <span id="add-student-btn">إضافة الطالب</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-list"></i>
+                            <span id="students-list-title">قائمة الطلاب</span>
+                        </h2>
+                        <p class="card-subtitle" id="students-list-subtitle">جميع الطلاب المسجلين في الأكاديمية</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="students-list">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <h3 id="no-students-title">لا يوجد طلاب مسجلين</h3>
+                                <p id="no-students-text">ابدأ بإضافة الطلاب باستخدام النموذج أعلاه</p>
+                                <button class="btn btn-primary" onclick="document.getElementById('student-name-ar').focus()">
+                                    <i class="fas fa-plus"></i>
+                                    <span id="add-first-student">إضافة أول طالب</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teachers Tab -->
+            <div id="teachers" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span id="add-teacher-title">إضافة معلم جديد</span>
+                        </h2>
+                        <p class="card-subtitle" id="add-teacher-subtitle">املأ البيانات التالية لإضافة معلم جديد مع إمكانية رفع السيرة الذاتية والشهادات</p>
+                    </div>
+                    <div class="card-body">
+                        <form id="teacher-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label id="teacher-id-label">رقم المعلم</label>
+                                    <input type="text" id="teacher-id" required readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-name-ar-label">اسم المعلم (عربي)</label>
+                                    <input type="text" id="teacher-name-ar" required placeholder="أدخل الاسم بالعربية">
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-name-en-label">اسم المعلم (English)</label>
+                                    <input type="text" id="teacher-name-en" required placeholder="Enter name in English">
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-subject-label">التخصص / Subject</label>
+                                    <select id="teacher-subject" required>
+                                        <option value="">اختر التخصص / Select Subject</option>
+                                        <option value="Mathematics">الرياضيات - Mathematics</option>
+                                        <option value="Arabic">اللغة العربية - Arabic Language</option>
+                                        <option value="English">اللغة الإنجليزية - English Language</option>
+                                        <option value="Science">العلوم - Science</option>
+                                        <option value="Physics">الفيزياء - Physics</option>
+                                        <option value="Chemistry">الكيمياء - Chemistry</option>
+                                        <option value="Biology">الأحياء - Biology</option>
+                                        <option value="History">التاريخ - History</option>
+                                        <option value="Geography">الجغرافيا - Geography</option>
+                                        <option value="Islamic Studies">التربية الإسلامية - Islamic Studies</option>
+                                        <option value="Physical Education">التربية البدنية - Physical Education</option>
+                                        <option value="Art">الفنون - Art</option>
+                                        <option value="Music">الموسيقى - Music</option>
+                                        <option value="Computer Science">علوم الحاسوب - Computer Science</option>
+                                        <option value="French">اللغة الفرنسية - French Language</option>
+                                        <option value="German">اللغة الألمانية - German Language</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-qualification-label">المؤهل العلمي / Qualification</label>
+                                    <select id="teacher-qualification" required>
+                                        <option value="">اختر المؤهل / Select Qualification</option>
+                                        <option value="Bachelor">بكالوريوس - Bachelor's Degree</option>
+                                        <option value="Master">ماجستير - Master's Degree</option>
+                                        <option value="PhD">دكتوراه - PhD</option>
+                                        <option value="Diploma">دبلوم - Diploma</option>
+                                        <option value="Certificate">شهادة مهنية - Professional Certificate</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-experience-label">سنوات الخبرة / Years of Experience</label>
+                                    <input type="number" id="teacher-experience" min="0" max="50" required placeholder="5">
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-salary-label">الراتب الشهري (ريال) / Monthly Salary (SAR)</label>
+                                    <input type="number" id="teacher-salary" step="0.01" required placeholder="8000">
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-phone-label">رقم الهاتف / Phone Number</label>
+                                    <input type="tel" id="teacher-phone" required placeholder="+966501234567">
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-email-label">البريد الإلكتروني / Email</label>
+                                    <input type="email" id="teacher-email" required placeholder="teacher@excellence.edu.sa">
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-hire-date-label">تاريخ التعيين / Hire Date</label>
+                                    <input type="date" id="teacher-hire-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-address-label">العنوان / Address</label>
+                                    <textarea id="teacher-address" rows="3" placeholder="العنوان الكامل مع المدينة"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label id="teacher-notes-label">ملاحظات / Notes</label>
+                                    <textarea id="teacher-notes" rows="2" placeholder="أي ملاحظات إضافية"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- File Upload Section for Teacher -->
+                            <div class="form-group">
+                                <label id="teacher-files-label">📁 صورة المعلم والملفات / Teacher Photo & Files</label>
+                                <div class="file-upload-area" id="teacher-file-upload">
+                                    <div class="file-upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <div class="file-upload-text" id="teacher-upload-text">اسحب الملفات هنا أو انقر للاختيار</div>
+                                    <div class="file-upload-hint" id="teacher-upload-hint">
+                                        يدعم: الصور (JPG, PNG), السيرة الذاتية (PDF), الشهادات (PDF, DOC)
+                                    </div>
+                                    <input type="file" id="teacher-files" multiple accept="image/*,.pdf,.doc,.docx" style="display: none;">
+                                </div>
+                                <div class="uploaded-files" id="teacher-uploaded-files"></div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                <span id="add-teacher-btn">إضافة المعلم</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-list"></i>
+                            <span id="teachers-list-title">قائمة المعلمين</span>
+                        </h2>
+                        <p class="card-subtitle" id="teachers-list-subtitle">جميع المعلمين في الأكاديمية</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="teachers-list">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                </div>
+                                <h3 id="no-teachers-title">لا يوجد معلمين مسجلين</h3>
+                                <p id="no-teachers-text">ابدأ بإضافة المعلمين باستخدام النموذج أعلاه</p>
+                                <button class="btn btn-primary" onclick="document.getElementById('teacher-name-ar').focus()">
+                                    <i class="fas fa-plus"></i>
+                                    <span id="add-first-teacher">إضافة أول معلم</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classes Tab -->
+            <div id="classes" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-door-open"></i>
+                            <span id="add-class-title">إضافة فصل جديد</span>
+                        </h2>
+                        <p class="card-subtitle" id="add-class-subtitle">إنشاء فصل دراسي جديد وربطه بالمعلمين</p>
+                    </div>
+                    <div class="card-body">
+                        <form id="class-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label id="class-id-label">رقم الفصل</label>
+                                    <input type="text" id="class-id" required readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label id="class-name-label">اسم الفصل</label>
+                                    <input type="text" id="class-name" required placeholder="فصل 1أ">
+                                </div>
+                                <div class="form-group">
+                                    <label id="class-level-label">المرحلة</label>
+                                    <select id="class-level" required>
+                                        <option value="">اختر المرحلة</option>
+                                        <option value="KG1">KG1 - روضة أولى</option>
+                                        <option value="KG2">KG2 - روضة ثانية</option>
+                                        <option value="Grade 1">Grade 1 - الصف الأول</option>
+                                        <option value="Grade 2">Grade 2 - الصف الثاني</option>
+                                        <option value="Grade 3">Grade 3 - الصف الثالث</option>
+                                        <option value="Grade 4">Grade 4 - الصف الرابع</option>
+                                        <option value="Grade 5">Grade 5 - الصف الخامس</option>
+                                        <option value="Grade 6">Grade 6 - الصف السادس</option>
+                                        <option value="Grade 7">Grade 7 - الصف السابع</option>
+                                        <option value="Grade 8">Grade 8 - الصف الثامن</option>
+                                        <option value="Grade 9">Grade 9 - الصف التاسع</option>
+                                        <option value="Grade 10">Grade 10 - الصف العاشر</option>
+                                        <option value="Grade 11">Grade 11 - الصف الحادي عشر</option>
+                                        <option value="Grade 12">Grade 12 - الصف الثاني عشر</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label id="class-capacity-label">السعة القصوى</label>
+                                    <input type="number" id="class-capacity" min="1" max="50" required placeholder="25">
+                                </div>
+                                <div class="form-group">
+                                    <label id="class-teacher-label">المعلم المسؤول</label>
+                                    <select id="class-teacher">
+                                        <option value="">اختر المعلم</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label id="class-room-label">رقم الغرفة</label>
+                                    <input type="text" id="class-room" placeholder="A101">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                <span id="add-class-btn">إضافة الفصل</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-list"></i>
+                            <span id="classes-list-title">قائمة الفصول</span>
+                        </h2>
+                        <p class="card-subtitle" id="classes-list-subtitle">جميع الفصول في الأكاديمية</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="classes-list">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-door-open"></i>
+                                </div>
+                                <h3 id="no-classes-title">لا يوجد فصول مسجلة</h3>
+                                <p id="no-classes-text">ابدأ بإضافة الفصول باستخدام النموذج أعلاه</p>
+                                <button class="btn btn-primary" onclick="document.getElementById('class-name').focus()">
+                                    <i class="fas fa-plus"></i>
+                                    <span id="add-first-class">إضافة أول فصل</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Files Tab -->
+            <div id="files" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-folder-open"></i>
+                            <span id="files-manager-title">مدير الملفات</span>
+                        </h2>
+                        <p class="card-subtitle" id="files-manager-subtitle">رفع وإدارة جميع ملفات الأكاديمية</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="file-upload-area" id="general-file-upload">
+                            <div class="file-upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="file-upload-text" id="general-upload-text">اسحب الملفات هنا أو انقر للاختيار</div>
+                            <div class="file-upload-hint" id="general-upload-hint">
+                                يدعم جميع أنواع الملفات: الصور، المستندات، جداول البيانات، العروض التقديمية
+                            </div>
+                            <input type="file" id="general-files" multiple accept="*/*" style="display: none;">
+                        </div>
+                        <div class="uploaded-files" id="general-uploaded-files"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-file-import"></i>
+                            <span id="import-data-title">استيراد البيانات</span>
+                        </h2>
+                        <p class="card-subtitle" id="import-data-subtitle">استيراد بيانات الطلاب والمعلمين من ملفات Excel</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="file-upload-area" id="import-file-upload">
+                            <div class="file-upload-icon">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+                            <div class="file-upload-text" id="import-upload-text">اسحب ملف Excel هنا أو انقر للاختيار</div>
+                            <div class="file-upload-hint" id="import-upload-hint">
+                                يدعم: Excel (.xlsx, .xls), CSV (.csv)
+                            </div>
+                            <input type="file" id="import-files" accept=".xlsx,.xls,.csv" style="display: none;">
+                        </div>
+                        <div id="import-preview" style="display: none;">
+                            <h4>معاينة البيانات:</h4>
+                            <div id="import-data-preview"></div>
+                            <div style="margin-top: 1rem;">
+                                <button class="btn btn-success" id="confirm-import">
+                                    <i class="fas fa-check"></i>
+                                    تأكيد الاستيراد
+                                </button>
+                                <button class="btn btn-secondary" id="cancel-import">
+                                    <i class="fas fa-times"></i>
+                                    إلغاء
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-chart-bar"></i>
+                            <span id="reports-title">التقارير والإحصائيات</span>
+                        </h2>
+                        <p class="card-subtitle" id="reports-subtitle">تقارير شاملة وإحصائيات تفاعلية</p>
+                    </div>
+                    <div class="card-body">
+                        <div style="margin-bottom: 2rem;">
+                            <button class="btn btn-success" onclick="exportToExcel()">
+                                <i class="fas fa-file-excel"></i>
+                                <span id="export-excel">تصدير Excel</span>
+                            </button>
+                            <button class="btn btn-danger" onclick="exportToPDF()">
+                                <i class="fas fa-file-pdf"></i>
+                                <span id="export-pdf">تصدير PDF</span>
+                            </button>
+                            <button class="btn btn-primary" onclick="printReport()">
+                                <i class="fas fa-print"></i>
+                                <span id="print-report">طباعة التقرير</span>
+                            </button>
+                            <button class="btn btn-secondary" onclick="generateReport()">
+                                <i class="fas fa-sync"></i>
+                                <span id="refresh-report">تحديث التقرير</span>
+                            </button>
+                        </div>
+
+                        <div id="reports-chart" style="height: 400px;">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h3 id="no-reports-title">لا توجد بيانات للتقارير</h3>
+                                <p id="no-reports-text">أضف البيانات أولاً لإنشاء التقارير التفاعلية</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success/Error Messages Container -->
+            <div id="messages-container"></div>
+        </div>
+    </div>
+
+    <!-- Data Status Indicator -->
+    <div id="data-status" class="data-status">
+        <i class="fas fa-save"></i>
+        <span id="data-status-text">تم حفظ البيانات</span>
+    </div>
+
+    <script>
+        // Global Variables
+        let currentLanguage = 'ar';
+        let academyData = {
+            students: [],
+            teachers: [],
+            classes: [],
+            files: []
+        };
+
+        // Secure Login Credentials
+        const loginCredentials = {
+            username: 'excellence_admin',
+            password: 'Excellence@2024'
+        };
+
+        // Language Translations
+        const translations = {
+            ar: {
+                // Login
+                loginTitle: 'أكاديمية التميز الدولية',
+                loginSubtitle: 'Excellence International Academy System',
+                academyInfoTitle: '🏆 معلومات الأكاديمية',
+                academyInfoText: 'أكاديمية التميز الدولية - نحو مستقبل أفضل<br>Excellence International Academy - Towards a Better Future<br>🌟 تعليم عالمي متميز | World-Class Education<br>📚 مناهج دولية معتمدة | Accredited International Curricula',
+                credentialsTitle: 'بيانات تسجيل الدخول',
+                usernameDisplay: '👤 اسم المستخدم:',
+                passwordDisplay: '🔑 كلمة المرور:',
+                usernameLabel: 'اسم المستخدم / Username',
+                passwordLabel: 'كلمة المرور / Password',
+                loginBtnText: 'تسجيل الدخول / Login',
+                errorText: 'اسم المستخدم أو كلمة المرور غير صحيحة',
+
+                // Header
+                headerTitle: '🏆 أكاديمية التميز الدولية',
+                headerSubtitle: 'Excellence International Academy Management System',
+                logoutText: 'تسجيل الخروج',
+                currentLang: 'العربية',
+
+                // Navigation
+                navOverview: 'نظرة عامة',
+                navStudents: 'الطلاب',
+                navTeachers: 'المعلمين',
+                navClasses: 'الفصول',
+                navFiles: 'الملفات',
+                navReports: 'التقارير',
+
+                // Statistics
+                studentsStatText: 'إجمالي الطلاب | Total Students',
+                teachersStatText: 'إجمالي المعلمين | Total Teachers',
+                classesStatText: 'إجمالي الفصول | Total Classes',
+                revenueStatText: 'إجمالي الإيرادات | Total Revenue',
+
+                // Overview
+                overviewChartTitle: 'الرسوم البيانية والإحصائيات',
+                overviewChartSubtitle: 'تحليل شامل لبيانات الأكاديمية',
+                noDataTitle: 'لا توجد بيانات للعرض',
+                noDataText: 'ابدأ بإضافة الطلاب والمعلمين لرؤية الإحصائيات التفاعلية',
+                startAdding: 'ابدأ بإضافة البيانات',
+
+                // Students
+                addStudentTitle: 'إضافة طالب جديد',
+                addStudentSubtitle: 'املأ البيانات التالية لإضافة طالب جديد مع إمكانية رفع الصور والملفات',
+                studentsListTitle: 'قائمة الطلاب',
+                studentsListSubtitle: 'جميع الطلاب المسجلين في الأكاديمية',
+                noStudentsTitle: 'لا يوجد طلاب مسجلين',
+                noStudentsText: 'ابدأ بإضافة الطلاب باستخدام النموذج أعلاه',
+                addFirstStudent: 'إضافة أول طالب',
+                addStudentBtn: 'إضافة الطالب',
+
+                // Teachers
+                addTeacherTitle: 'إضافة معلم جديد',
+                addTeacherSubtitle: 'املأ البيانات التالية لإضافة معلم جديد مع إمكانية رفع السيرة الذاتية والشهادات',
+                teachersListTitle: 'قائمة المعلمين',
+                teachersListSubtitle: 'جميع المعلمين في الأكاديمية',
+                noTeachersTitle: 'لا يوجد معلمين مسجلين',
+                noTeachersText: 'ابدأ بإضافة المعلمين باستخدام النموذج أعلاه',
+                addFirstTeacher: 'إضافة أول معلم',
+                addTeacherBtn: 'إضافة المعلم',
+
+                // Classes
+                addClassTitle: 'إضافة فصل جديد',
+                addClassSubtitle: 'إنشاء فصل دراسي جديد وربطه بالمعلمين',
+                classesListTitle: 'قائمة الفصول',
+                classesListSubtitle: 'جميع الفصول في الأكاديمية',
+                noClassesTitle: 'لا يوجد فصول مسجلة',
+                noClassesText: 'ابدأ بإضافة الفصول باستخدام النموذج أعلاه',
+                addFirstClass: 'إضافة أول فصل',
+                addClassBtn: 'إضافة الفصل',
+
+                // Files
+                filesManagerTitle: 'مدير الملفات',
+                filesManagerSubtitle: 'رفع وإدارة جميع ملفات الأكاديمية',
+                importDataTitle: 'استيراد البيانات',
+                importDataSubtitle: 'استيراد بيانات الطلاب والمعلمين من ملفات Excel',
+
+                // Reports
+                reportsTitle: 'التقارير والإحصائيات',
+                reportsSubtitle: 'تقارير شاملة وإحصائيات تفاعلية',
+                exportExcel: 'تصدير Excel',
+                exportPdf: 'تصدير PDF',
+                printReport: 'طباعة التقرير',
+                refreshReport: 'تحديث التقرير',
+                noReportsTitle: 'لا توجد بيانات للتقارير',
+                noReportsText: 'أضف البيانات أولاً لإنشاء التقارير التفاعلية',
+
+                // Messages
+                studentAdded: 'تم إضافة الطالب بنجاح!',
+                teacherAdded: 'تم إضافة المعلم بنجاح!',
+                classAdded: 'تم إضافة الفصل بنجاح!',
+                fileUploaded: 'تم رفع الملف بنجاح!',
+                dataExported: 'تم تصدير البيانات بنجاح!',
+                dataSaved: 'تم حفظ البيانات',
+                loginSuccess: 'مرحباً بك في أكاديمية التميز الدولية!',
+
+                // Common
+                add: 'إضافة',
+                edit: 'تعديل',
+                delete: 'حذف',
+                save: 'حفظ',
+                cancel: 'إلغاء',
+                close: 'إغلاق',
+                loading: 'جاري التحميل...',
+                noData: 'لا توجد بيانات'
+            },
+            en: {
+                // Login
+                loginTitle: 'Excellence International Academy',
+                loginSubtitle: 'Academy Management System',
+                academyInfoTitle: '🏆 Academy Information',
+                academyInfoText: 'Excellence International Academy - Towards a Better Future<br>أكاديمية التميز الدولية - نحو مستقبل أفضل<br>🌟 World-Class Education | تعليم عالمي متميز<br>📚 Accredited International Curricula | مناهج دولية معتمدة',
+                credentialsTitle: 'Login Credentials',
+                usernameDisplay: '👤 Username:',
+                passwordDisplay: '🔑 Password:',
+                usernameLabel: 'Username / اسم المستخدم',
+                passwordLabel: 'Password / كلمة المرور',
+                loginBtnText: 'Login / تسجيل الدخول',
+                errorText: 'Invalid username or password',
+
+                // Header
+                headerTitle: '🏆 Excellence International Academy',
+                headerSubtitle: 'أكاديمية التميز الدولية - نظام الإدارة',
+                logoutText: 'Logout',
+                currentLang: 'English',
+
+                // Navigation
+                navOverview: 'Overview',
+                navStudents: 'Students',
+                navTeachers: 'Teachers',
+                navClasses: 'Classes',
+                navFiles: 'Files',
+                navReports: 'Reports',
+
+                // Statistics
+                studentsStatText: 'Total Students | إجمالي الطلاب',
+                teachersStatText: 'Total Teachers | إجمالي المعلمين',
+                classesStatText: 'Total Classes | إجمالي الفصول',
+                revenueStatText: 'Total Revenue | إجمالي الإيرادات',
+
+                // Overview
+                overviewChartTitle: 'Charts and Statistics',
+                overviewChartSubtitle: 'Comprehensive analysis of academy data',
+                noDataTitle: 'No data to display',
+                noDataText: 'Start by adding students and teachers to see interactive statistics',
+                startAdding: 'Start Adding Data',
+
+                // Students
+                addStudentTitle: 'Add New Student',
+                addStudentSubtitle: 'Fill in the following details to add a new student with file upload support',
+                studentsListTitle: 'Students List',
+                studentsListSubtitle: 'All students registered in the academy',
+                noStudentsTitle: 'No students registered',
+                noStudentsText: 'Start by adding students using the form above',
+                addFirstStudent: 'Add First Student',
+                addStudentBtn: 'Add Student',
+
+                // Teachers
+                addTeacherTitle: 'Add New Teacher',
+                addTeacherSubtitle: 'Fill in the following details to add a new teacher with CV and certificates upload',
+                teachersListTitle: 'Teachers List',
+                teachersListSubtitle: 'All teachers in the academy',
+                noTeachersTitle: 'No teachers registered',
+                noTeachersText: 'Start by adding teachers using the form above',
+                addFirstTeacher: 'Add First Teacher',
+                addTeacherBtn: 'Add Teacher',
+
+                // Classes
+                addClassTitle: 'Add New Class',
+                addClassSubtitle: 'Create a new classroom and link it to teachers',
+                classesListTitle: 'Classes List',
+                classesListSubtitle: 'All classes in the academy',
+                noClassesTitle: 'No classes registered',
+                noClassesText: 'Start by adding classes using the form above',
+                addFirstClass: 'Add First Class',
+                addClassBtn: 'Add Class',
+
+                // Files
+                filesManagerTitle: 'File Manager',
+                filesManagerSubtitle: 'Upload and manage all academy files',
+                importDataTitle: 'Import Data',
+                importDataSubtitle: 'Import student and teacher data from Excel files',
+
+                // Reports
+                reportsTitle: 'Reports and Statistics',
+                reportsSubtitle: 'Comprehensive reports and interactive statistics',
+                exportExcel: 'Export Excel',
+                exportPdf: 'Export PDF',
+                printReport: 'Print Report',
+                refreshReport: 'Refresh Report',
+                noReportsTitle: 'No data for reports',
+                noReportsText: 'Add data first to create interactive reports',
+
+                // Messages
+                studentAdded: 'Student added successfully!',
+                teacherAdded: 'Teacher added successfully!',
+                classAdded: 'Class added successfully!',
+                fileUploaded: 'File uploaded successfully!',
+                dataExported: 'Data exported successfully!',
+                dataSaved: 'Data saved',
+                loginSuccess: 'Welcome to Excellence International Academy!',
+
+                // Common
+                add: 'Add',
+                edit: 'Edit',
+                delete: 'Delete',
+                save: 'Save',
+                cancel: 'Cancel',
+                close: 'Close',
+                loading: 'Loading...',
+                noData: 'No data available'
+            }
+        };
+
+        // Initialize System
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSystem();
+            setupEventListeners();
+        });
+
+        function initializeSystem() {
+            // Load saved data with enhanced persistence
+            loadSavedData();
+
+            // Set initial language
+            updateLanguage();
+            updateStats();
+            generateIds();
+
+            // Setup auto-save
+            setupAutoSave();
+        }
+
+        function loadSavedData() {
+            try {
+                // Try multiple storage keys for data persistence
+                const storageKeys = [
+                    'excellenceAcademyData',
+                    'excellenceAcademyData_backup',
+                    'excellenceAcademyData_' + new Date().getFullYear()
+                ];
+
+                let loadedData = null;
+                for (const key of storageKeys) {
+                    const savedData = localStorage.getItem(key);
+                    if (savedData) {
+                        loadedData = JSON.parse(savedData);
+                        break;
+                    }
+                }
+
+                if (loadedData) {
+                    academyData = loadedData;
+                    showDataStatus('تم استرجاع البيانات المحفوظة');
+                }
+            } catch (error) {
+                console.error('Error loading saved data:', error);
+            }
+        }
+
+        function setupAutoSave() {
+            // Save data every 30 seconds
+            setInterval(() => {
+                saveData();
+            }, 30000);
+
+            // Save data when page is about to unload
+            window.addEventListener('beforeunload', () => {
+                saveData();
+            });
+        }
+
+        function setupEventListeners() {
+            // Login form
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+
+            // Student form
+            document.getElementById('student-form').addEventListener('submit', handleAddStudent);
+
+            // Teacher form
+            document.getElementById('teacher-form').addEventListener('submit', handleAddTeacher);
+
+            // Class form
+            document.getElementById('class-form').addEventListener('submit', handleAddClass);
+
+            // File upload areas
+            setupFileUpload('student-file-upload', 'student-files', 'student-uploaded-files');
+            setupFileUpload('teacher-file-upload', 'teacher-files', 'teacher-uploaded-files');
+            setupFileUpload('general-file-upload', 'general-files', 'general-uploaded-files');
+            setupFileUpload('import-file-upload', 'import-files', null, handleImportFile);
+        }
+
+        // Login Functions
+        function handleLogin(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === loginCredentials.username && password === loginCredentials.password) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                updateStats();
+                showSuccess(translations[currentLanguage].loginSuccess);
+            } else {
+                showError();
+                document.getElementById('password').value = 'Excellence@2024';
+            }
+        }
+
+        function showError() {
+            const errorMsg = document.getElementById('error-msg');
+            errorMsg.style.display = 'block';
+            setTimeout(() => {
+                errorMsg.style.display = 'none';
+            }, 3000);
+        }
+
+        function logout() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('username').value = 'excellence_admin';
+            document.getElementById('password').value = 'Excellence@2024';
+        }
+
+        // Language Functions
+        function toggleLoginLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+        }
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            const t = translations[currentLanguage];
+
+            // Update body direction and class
+            document.body.className = currentLanguage === 'en' ? 'english' : '';
+            document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+
+            // Update login screen
+            updateElementText('login-title', t.loginTitle);
+            updateElementText('login-subtitle', t.loginSubtitle);
+            updateElementText('academy-info-title', t.academyInfoTitle);
+            updateElementHTML('academy-info-text', t.academyInfoText);
+            updateElementText('credentials-title', t.credentialsTitle);
+            updateElementText('username-display', t.usernameDisplay);
+            updateElementText('password-display', t.passwordDisplay);
+            updateElementText('username-label', t.usernameLabel);
+            updateElementText('password-label', t.passwordLabel);
+            updateElementText('login-btn-text', t.loginBtnText);
+            updateElementText('error-text', t.errorText);
+            updateElementText('lang-toggle-text', currentLanguage === 'ar' ? 'English' : 'العربية');
+
+            // Update header
+            updateElementText('header-title', t.headerTitle);
+            updateElementText('header-subtitle', t.headerSubtitle);
+            updateElementText('logout-text', t.logoutText);
+            updateElementText('current-lang', t.currentLang);
+
+            // Update navigation
+            updateElementText('nav-overview', t.navOverview);
+            updateElementText('nav-students', t.navStudents);
+            updateElementText('nav-teachers', t.navTeachers);
+            updateElementText('nav-classes', t.navClasses);
+            updateElementText('nav-files', t.navFiles);
+            updateElementText('nav-reports', t.navReports);
+
+            // Update statistics
+            updateElementText('students-stat-text', t.studentsStatText);
+            updateElementText('teachers-stat-text', t.teachersStatText);
+            updateElementText('classes-stat-text', t.classesStatText);
+            updateElementText('revenue-stat-text', t.revenueStatText);
+
+            // Update overview
+            updateElementText('overview-chart-title', t.overviewChartTitle);
+            updateElementText('overview-chart-subtitle', t.overviewChartSubtitle);
+            updateElementText('no-data-title', t.noDataTitle);
+            updateElementText('no-data-text', t.noDataText);
+            updateElementText('start-adding', t.startAdding);
+
+            // Update students section
+            updateElementText('add-student-title', t.addStudentTitle);
+            updateElementText('add-student-subtitle', t.addStudentSubtitle);
+            updateElementText('students-list-title', t.studentsListTitle);
+            updateElementText('students-list-subtitle', t.studentsListSubtitle);
+            updateElementText('no-students-title', t.noStudentsTitle);
+            updateElementText('no-students-text', t.noStudentsText);
+            updateElementText('add-first-student', t.addFirstStudent);
+            updateElementText('add-student-btn', t.addStudentBtn);
+
+            // Update teachers section
+            updateElementText('add-teacher-title', t.addTeacherTitle);
+            updateElementText('add-teacher-subtitle', t.addTeacherSubtitle);
+            updateElementText('teachers-list-title', t.teachersListTitle);
+            updateElementText('teachers-list-subtitle', t.teachersListSubtitle);
+            updateElementText('no-teachers-title', t.noTeachersTitle);
+            updateElementText('no-teachers-text', t.noTeachersText);
+            updateElementText('add-first-teacher', t.addFirstTeacher);
+            updateElementText('add-teacher-btn', t.addTeacherBtn);
+
+            // Update classes section
+            updateElementText('add-class-title', t.addClassTitle);
+            updateElementText('add-class-subtitle', t.addClassSubtitle);
+            updateElementText('classes-list-title', t.classesListTitle);
+            updateElementText('classes-list-subtitle', t.classesListSubtitle);
+            updateElementText('no-classes-title', t.noClassesTitle);
+            updateElementText('no-classes-text', t.noClassesText);
+            updateElementText('add-first-class', t.addFirstClass);
+            updateElementText('add-class-btn', t.addClassBtn);
+
+            // Update files section
+            updateElementText('files-manager-title', t.filesManagerTitle);
+            updateElementText('files-manager-subtitle', t.filesManagerSubtitle);
+            updateElementText('import-data-title', t.importDataTitle);
+            updateElementText('import-data-subtitle', t.importDataSubtitle);
+
+            // Update reports section
+            updateElementText('reports-title', t.reportsTitle);
+            updateElementText('reports-subtitle', t.reportsSubtitle);
+            updateElementText('export-excel', t.exportExcel);
+            updateElementText('export-pdf', t.exportPdf);
+            updateElementText('print-report', t.printReport);
+            updateElementText('refresh-report', t.refreshReport);
+            updateElementText('no-reports-title', t.noReportsTitle);
+            updateElementText('no-reports-text', t.noReportsText);
+
+            // Update data status
+            updateElementText('data-status-text', t.dataSaved);
+        }
+
+        function updateElementText(id, text) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = text;
+            }
+        }
+
+        function updateElementHTML(id, html) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.innerHTML = html;
+            }
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showSuccess(`تم نسخ "${text}" إلى الحافظة`);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showSuccess(`تم نسخ "${text}" إلى الحافظة`);
+            });
+        }
+
+        // Tab Functions
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Add active class to clicked nav tab
+            event.target.closest('.nav-tab').classList.add('active');
+
+            // Load tab-specific data
+            if (tabName === 'overview') {
+                updateOverviewChart();
+            } else if (tabName === 'students') {
+                updateStudentsList();
+            } else if (tabName === 'teachers') {
+                updateTeachersList();
+                updateClassTeacherOptions();
+            } else if (tabName === 'classes') {
+                updateClassesList();
+            } else if (tabName === 'reports') {
+                updateReportsChart();
+            }
+        }
+
+        // Student Functions
+        function handleAddStudent(e) {
+            e.preventDefault();
+
+            const student = {
+                id: document.getElementById('student-id').value,
+                nameAr: document.getElementById('student-name-ar').value,
+                nameEn: document.getElementById('student-name-en').value,
+                grade: document.getElementById('student-grade').value,
+                birthDate: document.getElementById('student-birth').value,
+                nationality: document.getElementById('student-nationality').value,
+                fees: parseFloat(document.getElementById('student-fees').value),
+                parentName: document.getElementById('parent-name').value,
+                parentPhone: document.getElementById('parent-phone').value,
+                parentEmail: document.getElementById('parent-email').value,
+                address: document.getElementById('student-address').value,
+                notes: document.getElementById('student-notes').value,
+                files: getUploadedFiles('student-uploaded-files'),
+                dateAdded: new Date().toISOString()
+            };
+
+            academyData.students.push(student);
+            saveData();
+            updateStudentsList();
+            updateStats();
+            showSuccess(translations[currentLanguage].studentAdded);
+            document.getElementById('student-form').reset();
+            clearUploadedFiles('student-uploaded-files');
+            generateStudentId();
+        }
+
+        function updateStudentsList() {
+            const container = document.getElementById('students-list');
+
+            if (academyData.students.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>${translations[currentLanguage].noStudentsTitle}</h3>
+                        <p>${translations[currentLanguage].noStudentsText}</p>
+                        <button class="btn btn-primary" onclick="document.getElementById('student-name-ar').focus()">
+                            <i class="fas fa-plus"></i>
+                            <span>${translations[currentLanguage].addFirstStudent}</span>
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div style="margin-bottom: 1rem;">
+                    <button class="btn btn-success" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel"></i>
+                        ${translations[currentLanguage].exportExcel}
+                    </button>
+                    <button class="btn btn-danger" onclick="exportToPDF()">
+                        <i class="fas fa-file-pdf"></i>
+                        ${translations[currentLanguage].exportPdf}
+                    </button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>الصورة</th>
+                            <th>رقم الطالب</th>
+                            <th>الاسم (عربي)</th>
+                            <th>الاسم (English)</th>
+                            <th>الصف</th>
+                            <th>الرسوم</th>
+                            <th>ولي الأمر</th>
+                            <th>الهاتف</th>
+                            <th>الملفات</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            academyData.students.forEach(student => {
+                const photoFile = student.files?.find(f => f.type.startsWith('image/'));
+                const photoHtml = photoFile ?
+                    `<img src="${photoFile.data}" alt="${student.nameAr}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` :
+                    `<div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-color); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">${student.nameAr.charAt(0)}</div>`;
+
+                const filesCount = student.files?.length || 0;
+
+                html += `
+                    <tr>
+                        <td>${photoHtml}</td>
+                        <td>${student.id}</td>
+                        <td>${student.nameAr}</td>
+                        <td>${student.nameEn}</td>
+                        <td>${student.grade}</td>
+                        <td>${student.fees.toLocaleString()} ريال</td>
+                        <td>${student.parentName}</td>
+                        <td>${student.parentPhone}</td>
+                        <td>
+                            <span class="badge">${filesCount} ملف</span>
+                            ${filesCount > 0 ? `<button class="btn btn-secondary btn-sm" onclick="viewStudentFiles('${student.id}')"><i class="fas fa-eye"></i></button>` : ''}
+                        </td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" onclick="editStudent('${student.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteStudent('${student.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // Teacher Functions
+        function handleAddTeacher(e) {
+            e.preventDefault();
+
+            const teacher = {
+                id: document.getElementById('teacher-id').value,
+                nameAr: document.getElementById('teacher-name-ar').value,
+                nameEn: document.getElementById('teacher-name-en').value,
+                subject: document.getElementById('teacher-subject').value,
+                qualification: document.getElementById('teacher-qualification').value,
+                experience: parseInt(document.getElementById('teacher-experience').value),
+                salary: parseFloat(document.getElementById('teacher-salary').value),
+                phone: document.getElementById('teacher-phone').value,
+                email: document.getElementById('teacher-email').value,
+                hireDate: document.getElementById('teacher-hire-date').value,
+                address: document.getElementById('teacher-address').value,
+                notes: document.getElementById('teacher-notes').value,
+                files: getUploadedFiles('teacher-uploaded-files'),
+                dateAdded: new Date().toISOString()
+            };
+
+            academyData.teachers.push(teacher);
+            saveData();
+            updateTeachersList();
+            updateClassTeacherOptions();
+            updateStats();
+            showSuccess(translations[currentLanguage].teacherAdded);
+            document.getElementById('teacher-form').reset();
+            clearUploadedFiles('teacher-uploaded-files');
+            generateTeacherId();
+        }
+
+        function updateTeachersList() {
+            const container = document.getElementById('teachers-list');
+
+            if (academyData.teachers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3>${translations[currentLanguage].noTeachersTitle}</h3>
+                        <p>${translations[currentLanguage].noTeachersText}</p>
+                        <button class="btn btn-primary" onclick="document.getElementById('teacher-name-ar').focus()">
+                            <i class="fas fa-plus"></i>
+                            <span>${translations[currentLanguage].addFirstTeacher}</span>
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div style="margin-bottom: 1rem;">
+                    <button class="btn btn-success" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel"></i>
+                        ${translations[currentLanguage].exportExcel}
+                    </button>
+                    <button class="btn btn-danger" onclick="exportToPDF()">
+                        <i class="fas fa-file-pdf"></i>
+                        ${translations[currentLanguage].exportPdf}
+                    </button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>الصورة</th>
+                            <th>رقم المعلم</th>
+                            <th>الاسم (عربي)</th>
+                            <th>الاسم (English)</th>
+                            <th>التخصص</th>
+                            <th>المؤهل</th>
+                            <th>الخبرة</th>
+                            <th>الراتب</th>
+                            <th>الهاتف</th>
+                            <th>الملفات</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            academyData.teachers.forEach(teacher => {
+                const photoFile = teacher.files?.find(f => f.type.startsWith('image/'));
+                const photoHtml = photoFile ?
+                    `<img src="${photoFile.data}" alt="${teacher.nameAr}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` :
+                    `<div style="width: 40px; height: 40px; border-radius: 50%; background: var(--success-color); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">${teacher.nameAr.charAt(0)}</div>`;
+
+                const filesCount = teacher.files?.length || 0;
+
+                html += `
+                    <tr>
+                        <td>${photoHtml}</td>
+                        <td>${teacher.id}</td>
+                        <td>${teacher.nameAr}</td>
+                        <td>${teacher.nameEn}</td>
+                        <td>${teacher.subject}</td>
+                        <td>${teacher.qualification}</td>
+                        <td>${teacher.experience} سنة</td>
+                        <td>${teacher.salary.toLocaleString()} ريال</td>
+                        <td>${teacher.phone}</td>
+                        <td>
+                            <span class="badge">${filesCount} ملف</span>
+                            ${filesCount > 0 ? `<button class="btn btn-secondary btn-sm" onclick="viewTeacherFiles('${teacher.id}')"><i class="fas fa-eye"></i></button>` : ''}
+                        </td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" onclick="editTeacher('${teacher.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteTeacher('${teacher.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function updateClassTeacherOptions() {
+            const select = document.getElementById('class-teacher');
+            if (!select) return;
+
+            select.innerHTML = '<option value="">اختر المعلم</option>';
+
+            academyData.teachers.forEach(teacher => {
+                const option = document.createElement('option');
+                option.value = teacher.id;
+                option.textContent = `${teacher.nameAr} - ${teacher.subject}`;
+                select.appendChild(option);
+            });
+        }
+
+        // Class Functions
+        function handleAddClass(e) {
+            e.preventDefault();
+
+            const classData = {
+                id: document.getElementById('class-id').value,
+                name: document.getElementById('class-name').value,
+                level: document.getElementById('class-level').value,
+                capacity: parseInt(document.getElementById('class-capacity').value),
+                teacherId: document.getElementById('class-teacher').value,
+                room: document.getElementById('class-room').value,
+                dateAdded: new Date().toISOString()
+            };
+
+            academyData.classes.push(classData);
+            saveData();
+            updateClassesList();
+            updateStats();
+            showSuccess(translations[currentLanguage].classAdded);
+            document.getElementById('class-form').reset();
+            generateClassId();
+        }
+
+        function updateClassesList() {
+            const container = document.getElementById('classes-list');
+
+            if (academyData.classes.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-door-open"></i>
+                        </div>
+                        <h3>${translations[currentLanguage].noClassesTitle}</h3>
+                        <p>${translations[currentLanguage].noClassesText}</p>
+                        <button class="btn btn-primary" onclick="document.getElementById('class-name').focus()">
+                            <i class="fas fa-plus"></i>
+                            <span>${translations[currentLanguage].addFirstClass}</span>
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الفصل</th>
+                            <th>اسم الفصل</th>
+                            <th>المرحلة</th>
+                            <th>السعة</th>
+                            <th>المعلم المسؤول</th>
+                            <th>رقم الغرفة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            academyData.classes.forEach(classItem => {
+                const teacher = academyData.teachers.find(t => t.id === classItem.teacherId);
+                const teacherName = teacher ? teacher.nameAr : 'غير محدد';
+
+                html += `
+                    <tr>
+                        <td>${classItem.id}</td>
+                        <td>${classItem.name}</td>
+                        <td>${classItem.level}</td>
+                        <td>${classItem.capacity}</td>
+                        <td>${teacherName}</td>
+                        <td>${classItem.room || 'غير محدد'}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" onclick="editClass('${classItem.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteClass('${classItem.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // File Upload Functions
+        function setupFileUpload(uploadAreaId, inputId, displayAreaId, customHandler) {
+            const uploadArea = document.getElementById(uploadAreaId);
+            const fileInput = document.getElementById(inputId);
+
+            if (!uploadArea || !fileInput) return;
+
+            uploadArea.addEventListener('click', () => fileInput.click());
+
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                if (customHandler) {
+                    customHandler(e.dataTransfer.files);
+                } else {
+                    handleFiles(e.dataTransfer.files, displayAreaId);
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (customHandler) {
+                    customHandler(e.target.files);
+                } else {
+                    handleFiles(e.target.files, displayAreaId);
+                }
+            });
+        }
+
+        function handleFiles(files, displayAreaId) {
+            const displayArea = document.getElementById(displayAreaId);
+            if (!displayArea) return;
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const fileData = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: e.target.result,
+                        uploadDate: new Date().toISOString()
+                    };
+
+                    displayUploadedFile(fileData, displayArea);
+                    showSuccess(`${translations[currentLanguage].fileUploaded}: ${file.name}`);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function displayUploadedFile(fileData, container) {
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'uploaded-file';
+
+            let preview = '';
+            if (fileData.type.startsWith('image/')) {
+                preview = `<img src="${fileData.data}" alt="${fileData.name}" class="file-preview">`;
+            } else {
+                const icon = getFileIcon(fileData.type);
+                preview = `<div class="file-preview"><i class="${icon}"></i></div>`;
+            }
+
+            fileDiv.innerHTML = `
+                ${preview}
+                <div style="flex: 1;">
+                    <strong>${fileData.name}</strong>
+                    <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">
+                        ${formatFileSize(fileData.size)} - ${new Date(fileData.uploadDate).toLocaleDateString('ar-SA')}
+                    </p>
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="removeUploadedFile(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            fileDiv.dataset.fileData = JSON.stringify(fileData);
+            container.appendChild(fileDiv);
+        }
+
+        function getFileIcon(fileType) {
+            if (fileType.includes('pdf')) return 'fas fa-file-pdf';
+            if (fileType.includes('word') || fileType.includes('document')) return 'fas fa-file-word';
+            if (fileType.includes('excel') || fileType.includes('spreadsheet')) return 'fas fa-file-excel';
+            if (fileType.includes('powerpoint') || fileType.includes('presentation')) return 'fas fa-file-powerpoint';
+            if (fileType.includes('image')) return 'fas fa-file-image';
+            if (fileType.includes('video')) return 'fas fa-file-video';
+            if (fileType.includes('audio')) return 'fas fa-file-audio';
+            return 'fas fa-file';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function removeUploadedFile(button) {
+            button.closest('.uploaded-file').remove();
+        }
+
+        function getUploadedFiles(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+
+            const files = [];
+            container.querySelectorAll('.uploaded-file').forEach(fileDiv => {
+                const fileData = JSON.parse(fileDiv.dataset.fileData);
+                files.push(fileData);
+            });
+            return files;
+        }
+
+        function clearUploadedFiles(containerId) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.innerHTML = '';
+            }
+        }
+
+        // ID Generation Functions
+        function generateIds() {
+            generateStudentId();
+            generateTeacherId();
+            generateClassId();
+        }
+
+        function generateStudentId() {
+            const year = new Date().getFullYear();
+            const count = academyData.students.length + 1;
+            const id = `STU${year}${String(count).padStart(4, '0')}`;
+            const field = document.getElementById('student-id');
+            if (field) field.value = id;
+        }
+
+        function generateTeacherId() {
+            const year = new Date().getFullYear();
+            const count = academyData.teachers.length + 1;
+            const id = `TCH${year}${String(count).padStart(4, '0')}`;
+            const field = document.getElementById('teacher-id');
+            if (field) field.value = id;
+        }
+
+        function generateClassId() {
+            const year = new Date().getFullYear();
+            const count = academyData.classes.length + 1;
+            const id = `CLS${year}${String(count).padStart(4, '0')}`;
+            const field = document.getElementById('class-id');
+            if (field) field.value = id;
+        }
+
+        // Statistics Functions
+        function updateStats() {
+            document.getElementById('total-students').textContent = academyData.students.length;
+            document.getElementById('total-teachers').textContent = academyData.teachers.length;
+            document.getElementById('total-classes').textContent = academyData.classes.length;
+
+            const totalRevenue = academyData.students.reduce((sum, student) => sum + (student.fees || 0), 0);
+            document.getElementById('total-revenue').textContent = totalRevenue.toLocaleString() + ' ريال';
+        }
+
+        // Chart Functions
+        function updateOverviewChart() {
+            if (academyData.students.length === 0) {
+                return;
+            }
+
+            const gradeData = {};
+            academyData.students.forEach(student => {
+                gradeData[student.grade] = (gradeData[student.grade] || 0) + 1;
+            });
+
+            const data = [{
+                x: Object.keys(gradeData),
+                y: Object.values(gradeData),
+                type: 'bar',
+                marker: {
+                    color: 'rgba(30, 64, 175, 0.8)',
+                    line: {
+                        color: 'rgba(30, 64, 175, 1)',
+                        width: 2
+                    }
+                },
+                name: 'عدد الطلاب'
+            }];
+
+            const layout = {
+                title: {
+                    text: 'توزيع الطلاب حسب الصف',
+                    font: { size: 18, family: 'Cairo, sans-serif' }
+                },
+                xaxis: {
+                    title: 'الصف',
+                    font: { family: 'Cairo, sans-serif' }
+                },
+                yaxis: {
+                    title: 'عدد الطلاب',
+                    font: { family: 'Cairo, sans-serif' }
+                },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: { family: 'Cairo, sans-serif' }
+            };
+
+            Plotly.newPlot('overview-chart', data, layout, {responsive: true});
+        }
+
+        function updateReportsChart() {
+            if (academyData.students.length === 0 && academyData.teachers.length === 0) {
+                return;
+            }
+
+            const data = [{
+                values: [academyData.students.length, academyData.teachers.length, academyData.classes.length],
+                labels: ['الطلاب', 'المعلمين', 'الفصول'],
+                type: 'pie',
+                marker: {
+                    colors: ['#3b82f6', '#10b981', '#f59e0b']
+                }
+            }];
+
+            const layout = {
+                title: {
+                    text: 'إحصائيات الأكاديمية',
+                    font: { size: 18, family: 'Cairo, sans-serif' }
+                },
+                font: { family: 'Cairo, sans-serif' }
+            };
+
+            Plotly.newPlot('reports-chart', data, layout, {responsive: true});
+        }
+
+        // Data Persistence Functions
+        function saveData() {
+            try {
+                const dataString = JSON.stringify(academyData);
+
+                // Save to multiple keys for redundancy
+                localStorage.setItem('excellenceAcademyData', dataString);
+                localStorage.setItem('excellenceAcademyData_backup', dataString);
+                localStorage.setItem('excellenceAcademyData_' + new Date().getFullYear(), dataString);
+
+                // Show save indicator
+                showDataStatus(translations[currentLanguage].dataSaved);
+
+                return true;
+            } catch (error) {
+                console.error('Error saving data:', error);
+                showError('خطأ في حفظ البيانات');
+                return false;
+            }
+        }
+
+        function showDataStatus(message) {
+            const statusDiv = document.getElementById('data-status');
+            statusDiv.textContent = message;
+            statusDiv.classList.add('show');
+
+            setTimeout(() => {
+                statusDiv.classList.remove('show');
+            }, 2000);
+        }
+
+        // Export Functions
+        function exportToExcel() {
+            if (typeof XLSX === 'undefined') {
+                showError('مكتبة Excel غير متوفرة');
+                return;
+            }
+
+            const wb = XLSX.utils.book_new();
+
+            if (academyData.students.length > 0) {
+                const studentsData = academyData.students.map(student => ({
+                    'رقم الطالب': student.id,
+                    'الاسم (عربي)': student.nameAr,
+                    'الاسم (English)': student.nameEn,
+                    'الصف': student.grade,
+                    'تاريخ الميلاد': student.birthDate,
+                    'الجنسية': student.nationality,
+                    'الرسوم': student.fees,
+                    'ولي الأمر': student.parentName,
+                    'هاتف ولي الأمر': student.parentPhone,
+                    'بريد ولي الأمر': student.parentEmail,
+                    'العنوان': student.address,
+                    'ملاحظات': student.notes,
+                    'عدد الملفات': student.files?.length || 0,
+                    'تاريخ الإضافة': new Date(student.dateAdded).toLocaleDateString('ar-SA')
+                }));
+                const studentsWS = XLSX.utils.json_to_sheet(studentsData);
+                XLSX.utils.book_append_sheet(wb, studentsWS, "Students");
+            }
+
+            if (academyData.teachers.length > 0) {
+                const teachersData = academyData.teachers.map(teacher => ({
+                    'رقم المعلم': teacher.id,
+                    'الاسم (عربي)': teacher.nameAr,
+                    'الاسم (English)': teacher.nameEn,
+                    'التخصص': teacher.subject,
+                    'المؤهل': teacher.qualification,
+                    'سنوات الخبرة': teacher.experience,
+                    'الراتب': teacher.salary,
+                    'الهاتف': teacher.phone,
+                    'البريد الإلكتروني': teacher.email,
+                    'تاريخ التعيين': teacher.hireDate,
+                    'العنوان': teacher.address,
+                    'ملاحظات': teacher.notes,
+                    'عدد الملفات': teacher.files?.length || 0,
+                    'تاريخ الإضافة': new Date(teacher.dateAdded).toLocaleDateString('ar-SA')
+                }));
+                const teachersWS = XLSX.utils.json_to_sheet(teachersData);
+                XLSX.utils.book_append_sheet(wb, teachersWS, "Teachers");
+            }
+
+            if (academyData.classes.length > 0) {
+                const classesData = academyData.classes.map(classItem => {
+                    const teacher = academyData.teachers.find(t => t.id === classItem.teacherId);
+                    return {
+                        'رقم الفصل': classItem.id,
+                        'اسم الفصل': classItem.name,
+                        'المرحلة': classItem.level,
+                        'السعة': classItem.capacity,
+                        'المعلم المسؤول': teacher ? teacher.nameAr : 'غير محدد',
+                        'رقم الغرفة': classItem.room || 'غير محدد',
+                        'تاريخ الإضافة': new Date(classItem.dateAdded).toLocaleDateString('ar-SA')
+                    };
+                });
+                const classesWS = XLSX.utils.json_to_sheet(classesData);
+                XLSX.utils.book_append_sheet(wb, classesWS, "Classes");
+            }
+
+            const fileName = `Excellence_Academy_Data_${new Date().toISOString().split('T')[0]}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+            showSuccess(translations[currentLanguage].dataExported);
+        }
+
+        function exportToPDF() {
+            window.print();
+            showSuccess('تم فتح نافذة الطباعة');
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        function generateReport() {
+            updateOverviewChart();
+            updateReportsChart();
+            showSuccess('تم تحديث التقارير');
+        }
+
+        // Delete Functions
+        function deleteStudent(id) {
+            if (confirm('هل أنت متأكد من حذف هذا الطالب؟')) {
+                academyData.students = academyData.students.filter(student => student.id !== id);
+                saveData();
+                updateStudentsList();
+                updateStats();
+                showSuccess('تم حذف الطالب بنجاح');
+            }
+        }
+
+        function deleteTeacher(id) {
+            if (confirm('هل أنت متأكد من حذف هذا المعلم؟')) {
+                academyData.teachers = academyData.teachers.filter(teacher => teacher.id !== id);
+                saveData();
+                updateTeachersList();
+                updateClassTeacherOptions();
+                updateStats();
+                showSuccess('تم حذف المعلم بنجاح');
+            }
+        }
+
+        function deleteClass(id) {
+            if (confirm('هل أنت متأكد من حذف هذا الفصل؟')) {
+                academyData.classes = academyData.classes.filter(classItem => classItem.id !== id);
+                saveData();
+                updateClassesList();
+                updateStats();
+                showSuccess('تم حذف الفصل بنجاح');
+            }
+        }
+
+        // Edit Functions (placeholder)
+        function editStudent(id) {
+            showMessage('ميزة التعديل قيد التطوير', 'info');
+        }
+
+        function editTeacher(id) {
+            showMessage('ميزة التعديل قيد التطوير', 'info');
+        }
+
+        function editClass(id) {
+            showMessage('ميزة التعديل قيد التطوير', 'info');
+        }
+
+        // File viewing functions
+        function viewStudentFiles(id) {
+            const student = academyData.students.find(s => s.id === id);
+            if (student && student.files) {
+                showFilesModal(student.files, `ملفات الطالب: ${student.nameAr}`);
+            }
+        }
+
+        function viewTeacherFiles(id) {
+            const teacher = academyData.teachers.find(t => t.id === id);
+            if (teacher && teacher.files) {
+                showFilesModal(teacher.files, `ملفات المعلم: ${teacher.nameAr}`);
+            }
+        }
+
+        function showFilesModal(files, title) {
+            // Simple file viewer - can be enhanced with a proper modal
+            let content = `<h3>${title}</h3><div style="display: grid; gap: 1rem;">`;
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    content += `<img src="${file.data}" alt="${file.name}" style="max-width: 200px; border-radius: 8px;">`;
+                } else {
+                    content += `<a href="${file.data}" download="${file.name}" class="btn btn-secondary">${file.name}</a>`;
+                }
+            });
+            content += '</div>';
+
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <html>
+                    <head><title>${title}</title></head>
+                    <body style="font-family: Cairo, sans-serif; padding: 2rem;">
+                        ${content}
+                    </body>
+                </html>
+            `);
+        }
+
+        // Import Functions
+        function handleImportFile(files) {
+            const file = files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, {type: 'array'});
+
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+
+                    showImportPreview(jsonData, file.name);
+                } catch (error) {
+                    showError(`خطأ في قراءة ملف ${file.name}: ${error.message}`);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function showImportPreview(data, filename) {
+            const previewDiv = document.getElementById('import-preview');
+            const dataPreview = document.getElementById('import-data-preview');
+
+            if (data.length === 0) {
+                dataPreview.innerHTML = '<p>لا توجد بيانات في الملف</p>';
+                return;
+            }
+
+            const headers = Object.keys(data[0]);
+            let html = `
+                <h4>معاينة البيانات من: ${filename}</h4>
+                <p>عدد الصفوف: ${data.length}</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            ${headers.map(header => `<th>${header}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            data.slice(0, 5).forEach(row => {
+                html += '<tr>';
+                headers.forEach(header => {
+                    html += `<td>${row[header] || ''}</td>`;
+                });
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+
+            if (data.length > 5) {
+                html += `<p>... و ${data.length - 5} صف آخر</p>`;
+            }
+
+            dataPreview.innerHTML = html;
+            previewDiv.style.display = 'block';
+
+            // Store data for import
+            window.pendingImportData = data;
+        }
+
+        // Utility Functions
+        function showSuccess(message) {
+            showMessage(message, 'success');
+        }
+
+        function showError(message) {
+            showMessage(message, 'error');
+        }
+
+        function showMessage(message, type) {
+            const container = document.getElementById('messages-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'success' ? 'success-msg' : 'error-message';
+
+            const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
+            messageDiv.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(messageDiv);
+
+            setTimeout(() => {
+                if (container.contains(messageDiv)) {
+                    container.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+
+        // Add CSS for badges and small buttons
+        const additionalCSS = `
+            .badge {
+                background: var(--primary-color);
+                color: white;
+                padding: 0.25rem 0.5rem;
+                border-radius: 4px;
+                font-size: 0.8rem;
+                font-weight: 600;
+            }
+
+            .btn-sm {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.8rem;
+            }
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = additionalCSS;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

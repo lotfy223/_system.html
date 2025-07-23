@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 مدرسة انترناشونال الدولية | International School</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            position: relative;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .school-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .login-box h1 {
+            color: #2563eb;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-box h2 {
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+
+        .credentials-info {
+            background: rgba(37, 99, 235, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            font-size: 0.9em;
+            color: #2563eb;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .credentials-info h4 {
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .credentials-info .cred-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+        }
+
+        .copy-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #1d4ed8;
+            transform: scale(1.05);
+        }
+
+        .form-group {
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.9rem;
+        }
+
+        .form-group .input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            background: white;
+        }
+
+        .form-group .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .error-msg {
+            background: #ef4444;
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .stat-card .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            margin: 2rem 0;
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .success-msg {
+            background: #10b981;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+            font-weight: 600;
+            min-width: 120px;
+            margin: 2px;
+        }
+
+        .nav-tab:hover {
+            background: #f1f5f9;
+            color: #2563eb;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .stat-card h3 {
+                font-size: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-box">
+            <div class="school-logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            
+            <h1>مدرسة انترناشونال الدولية</h1>
+            <h2>International School Management System</h2>
+            
+            <div class="credentials-info">
+                <h4>🔐 بيانات تسجيل الدخول | Login Credentials</h4>
+                <div class="cred-item">
+                    <span><strong>اسم المستخدم:</strong> admin</span>
+                    <button class="copy-btn" onclick="copyToClipboard('admin')">نسخ</button>
+                </div>
+                <div class="cred-item">
+                    <span><strong>كلمة المرور:</strong> 123456</span>
+                    <button class="copy-btn" onclick="copyToClipboard('123456')">نسخ</button>
+                </div>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label>اسم المستخدم / Username</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" required value="admin">
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>كلمة المرور / Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" required value="123456">
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="error-msg" id="error-msg">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>اسم المستخدم أو كلمة المرور غير صحيحة</span>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <span>تسجيل الدخول / Login</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div class="header">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                تسجيل الخروج
+            </button>
+            <h1>🌍 مدرسة انترناشونال الدولية</h1>
+            <p>International School Management System</p>
+        </div>
+
+        <div class="container">
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3 id="total-students">0</h3>
+                    <p>إجمالي الطلاب | Total Students</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3 id="total-teachers">0</h3>
+                    <p>إجمالي المعلمين | Total Teachers</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                    <h3 id="total-classes">0</h3>
+                    <p>إجمالي الفصول | Total Classes</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 id="total-revenue">0 ريال</h3>
+                    <p>إجمالي الإيرادات | Total Revenue</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="showTab('overview')">
+                    <i class="fas fa-chart-line"></i>
+                    نظرة عامة
+                </div>
+                <div class="nav-tab" onclick="showTab('students')">
+                    <i class="fas fa-user-graduate"></i>
+                    الطلاب
+                </div>
+                <div class="nav-tab" onclick="showTab('teachers')">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    المعلمين
+                </div>
+                <div class="nav-tab" onclick="showTab('classes')">
+                    <i class="fas fa-door-open"></i>
+                    الفصول
+                </div>
+                <div class="nav-tab" onclick="showTab('reports')">
+                    <i class="fas fa-chart-bar"></i>
+                    التقارير
+                </div>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📊 الرسوم البيانية والإحصائيات</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="overview-chart" style="height: 400px;">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h3>لا توجد بيانات للعرض</h3>
+                                <p>ابدأ بإضافة الطلاب والمعلمين لرؤية الإحصائيات</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Tab -->
+            <div id="students" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">👨‍🎓 إضافة طالب جديد</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="student-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>رقم الطالب</label>
+                                    <input type="text" id="student-id" required readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>اسم الطالب</label>
+                                    <input type="text" id="student-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>اسم الطالب بالإنجليزية</label>
+                                    <input type="text" id="student-name-en" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>الصف</label>
+                                    <select id="student-grade" required>
+                                        <option value="">اختر الصف</option>
+                                        <option value="KG1">KG1 - روضة أولى</option>
+                                        <option value="KG2">KG2 - روضة ثانية</option>
+                                        <option value="Grade 1">Grade 1 - الصف الأول</option>
+                                        <option value="Grade 2">Grade 2 - الصف الثاني</option>
+                                        <option value="Grade 3">Grade 3 - الصف الثالث</option>
+                                        <option value="Grade 4">Grade 4 - الصف الرابع</option>
+                                        <option value="Grade 5">Grade 5 - الصف الخامس</option>
+                                        <option value="Grade 6">Grade 6 - الصف السادس</option>
+                                        <option value="Grade 7">Grade 7 - الصف السابع</option>
+                                        <option value="Grade 8">Grade 8 - الصف الثامن</option>
+                                        <option value="Grade 9">Grade 9 - الصف التاسع</option>
+                                        <option value="Grade 10">Grade 10 - الصف العاشر</option>
+                                        <option value="Grade 11">Grade 11 - الصف الحادي عشر</option>
+                                        <option value="Grade 12">Grade 12 - الصف الثاني عشر</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>تاريخ الميلاد</label>
+                                    <input type="date" id="student-birth" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>الرسوم السنوية (ريال)</label>
+                                    <input type="number" id="student-fees" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>اسم ولي الأمر</label>
+                                    <input type="text" id="parent-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>هاتف ولي الأمر</label>
+                                    <input type="tel" id="parent-phone" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                إضافة الطالب
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📋 قائمة الطلاب</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="students-list">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <h3>لا يوجد طلاب مسجلين</h3>
+                                <p>ابدأ بإضافة الطلاب باستخدام النموذج أعلاه</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teachers Tab -->
+            <div id="teachers" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">👨‍🏫 إضافة معلم جديد</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="teacher-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>رقم المعلم</label>
+                                    <input type="text" id="teacher-id" required readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>اسم المعلم</label>
+                                    <input type="text" id="teacher-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>اسم المعلم بالإنجليزية</label>
+                                    <input type="text" id="teacher-name-en" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>التخصص</label>
+                                    <select id="teacher-subject" required>
+                                        <option value="">اختر التخصص</option>
+                                        <option value="Mathematics">الرياضيات - Mathematics</option>
+                                        <option value="Arabic">اللغة العربية - Arabic</option>
+                                        <option value="English">اللغة الإنجليزية - English</option>
+                                        <option value="Science">العلوم - Science</option>
+                                        <option value="Physics">الفيزياء - Physics</option>
+                                        <option value="Chemistry">الكيمياء - Chemistry</option>
+                                        <option value="Biology">الأحياء - Biology</option>
+                                        <option value="History">التاريخ - History</option>
+                                        <option value="Geography">الجغرافيا - Geography</option>
+                                        <option value="Islamic Studies">التربية الإسلامية - Islamic Studies</option>
+                                        <option value="Physical Education">التربية البدنية - Physical Education</option>
+                                        <option value="Art">الفنون - Art</option>
+                                        <option value="Computer Science">علوم الحاسوب - Computer Science</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>سنوات الخبرة</label>
+                                    <input type="number" id="teacher-experience" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>الراتب الشهري (ريال)</label>
+                                    <input type="number" id="teacher-salary" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>رقم الهاتف</label>
+                                    <input type="tel" id="teacher-phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>البريد الإلكتروني</label>
+                                    <input type="email" id="teacher-email" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                إضافة المعلم
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📋 قائمة المعلمين</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="teachers-list">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                </div>
+                                <h3>لا يوجد معلمين مسجلين</h3>
+                                <p>ابدأ بإضافة المعلمين باستخدام النموذج أعلاه</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classes Tab -->
+            <div id="classes" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">🚪 إضافة فصل جديد</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="class-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>رقم الفصل</label>
+                                    <input type="text" id="class-id" required readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>اسم الفصل</label>
+                                    <input type="text" id="class-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>المرحلة</label>
+                                    <select id="class-level" required>
+                                        <option value="">اختر المرحلة</option>
+                                        <option value="KG1">KG1 - روضة أولى</option>
+                                        <option value="KG2">KG2 - روضة ثانية</option>
+                                        <option value="Grade 1">Grade 1 - الصف الأول</option>
+                                        <option value="Grade 2">Grade 2 - الصف الثاني</option>
+                                        <option value="Grade 3">Grade 3 - الصف الثالث</option>
+                                        <option value="Grade 4">Grade 4 - الصف الرابع</option>
+                                        <option value="Grade 5">Grade 5 - الصف الخامس</option>
+                                        <option value="Grade 6">Grade 6 - الصف السادس</option>
+                                        <option value="Grade 7">Grade 7 - الصف السابع</option>
+                                        <option value="Grade 8">Grade 8 - الصف الثامن</option>
+                                        <option value="Grade 9">Grade 9 - الصف التاسع</option>
+                                        <option value="Grade 10">Grade 10 - الصف العاشر</option>
+                                        <option value="Grade 11">Grade 11 - الصف الحادي عشر</option>
+                                        <option value="Grade 12">Grade 12 - الصف الثاني عشر</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>السعة القصوى</label>
+                                    <input type="number" id="class-capacity" min="1" max="50" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>المعلم المسؤول</label>
+                                    <select id="class-teacher">
+                                        <option value="">اختر المعلم</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>رقم الغرفة</label>
+                                    <input type="text" id="class-room">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                إضافة الفصل
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📋 قائمة الفصول</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="classes-list">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-door-open"></i>
+                                </div>
+                                <h3>لا يوجد فصول مسجلة</h3>
+                                <p>ابدأ بإضافة الفصول باستخدام النموذج أعلاه</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📈 التقارير والإحصائيات</h2>
+                    </div>
+                    <div class="card-body">
+                        <div style="margin-bottom: 2rem;">
+                            <button class="btn btn-success" onclick="exportToExcel()">
+                                <i class="fas fa-file-excel"></i>
+                                تصدير Excel
+                            </button>
+                            <button class="btn btn-danger" onclick="exportToPDF()">
+                                <i class="fas fa-file-pdf"></i>
+                                تصدير PDF
+                            </button>
+                            <button class="btn btn-primary" onclick="printReport()">
+                                <i class="fas fa-print"></i>
+                                طباعة التقرير
+                            </button>
+                        </div>
+
+                        <div id="reports-chart" style="height: 400px;">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h3>لا توجد بيانات للتقارير</h3>
+                                <p>أضف البيانات أولاً لإنشاء التقارير</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Messages Container -->
+            <div id="messages-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables
+        let schoolData = {
+            students: [],
+            teachers: [],
+            classes: []
+        };
+
+        // Simple Login Credentials
+        const loginCredentials = {
+            username: 'admin',
+            password: '123456'
+        };
+
+        // Initialize System
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSystem();
+            setupEventListeners();
+        });
+
+        function initializeSystem() {
+            // Load saved data from localStorage
+            const savedData = localStorage.getItem('schoolSystemData');
+            if (savedData) {
+                schoolData = JSON.parse(savedData);
+            }
+            updateStats();
+            generateIds();
+        }
+
+        function setupEventListeners() {
+            // Login form
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+
+            // Student form
+            document.getElementById('student-form').addEventListener('submit', handleAddStudent);
+
+            // Teacher form
+            document.getElementById('teacher-form').addEventListener('submit', handleAddTeacher);
+
+            // Class form
+            document.getElementById('class-form').addEventListener('submit', handleAddClass);
+        }
+
+        // Login Functions
+        function handleLogin(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === loginCredentials.username && password === loginCredentials.password) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                updateStats();
+                showSuccess('تم تسجيل الدخول بنجاح! مرحباً بك في نظام مدرسة انترناشونال');
+            } else {
+                showError();
+                document.getElementById('password').value = '';
+            }
+        }
+
+        function showError() {
+            const errorMsg = document.getElementById('error-msg');
+            errorMsg.style.display = 'block';
+            setTimeout(() => {
+                errorMsg.style.display = 'none';
+            }, 3000);
+        }
+
+        function logout() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = '123456';
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showSuccess(`تم نسخ "${text}" إلى الحافظة`);
+            });
+        }
+
+        // Tab Functions
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Add active class to clicked nav tab
+            event.target.classList.add('active');
+
+            // Load tab-specific data
+            if (tabName === 'overview') {
+                updateOverviewChart();
+            } else if (tabName === 'students') {
+                updateStudentsList();
+            } else if (tabName === 'teachers') {
+                updateTeachersList();
+                updateClassTeacherOptions();
+            } else if (tabName === 'classes') {
+                updateClassesList();
+            } else if (tabName === 'reports') {
+                updateReportsChart();
+            }
+        }
+
+        // Student Functions
+        function handleAddStudent(e) {
+            e.preventDefault();
+
+            const student = {
+                id: document.getElementById('student-id').value,
+                name: document.getElementById('student-name').value,
+                nameEn: document.getElementById('student-name-en').value,
+                grade: document.getElementById('student-grade').value,
+                birthDate: document.getElementById('student-birth').value,
+                fees: parseFloat(document.getElementById('student-fees').value),
+                parentName: document.getElementById('parent-name').value,
+                parentPhone: document.getElementById('parent-phone').value,
+                dateAdded: new Date().toISOString()
+            };
+
+            schoolData.students.push(student);
+            saveData();
+            updateStudentsList();
+            updateStats();
+            showSuccess(`تم إضافة الطالب ${student.name} بنجاح!`);
+            document.getElementById('student-form').reset();
+            generateStudentId();
+        }
+
+        function updateStudentsList() {
+            const container = document.getElementById('students-list');
+
+            if (schoolData.students.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>لا يوجد طلاب مسجلين</h3>
+                        <p>ابدأ بإضافة الطلاب باستخدام النموذج أعلاه</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div style="margin-bottom: 1rem;">
+                    <button class="btn btn-success" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel"></i>
+                        تصدير Excel
+                    </button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الطالب</th>
+                            <th>الاسم</th>
+                            <th>الاسم بالإنجليزية</th>
+                            <th>الصف</th>
+                            <th>الرسوم</th>
+                            <th>ولي الأمر</th>
+                            <th>الهاتف</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            schoolData.students.forEach(student => {
+                html += `
+                    <tr>
+                        <td>${student.id}</td>
+                        <td>${student.name}</td>
+                        <td>${student.nameEn}</td>
+                        <td>${student.grade}</td>
+                        <td>${student.fees.toLocaleString()} ريال</td>
+                        <td>${student.parentName}</td>
+                        <td>${student.parentPhone}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteStudent('${student.id}')">
+                                <i class="fas fa-trash"></i>
+                                حذف
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // Teacher Functions
+        function handleAddTeacher(e) {
+            e.preventDefault();
+
+            const teacher = {
+                id: document.getElementById('teacher-id').value,
+                name: document.getElementById('teacher-name').value,
+                nameEn: document.getElementById('teacher-name-en').value,
+                subject: document.getElementById('teacher-subject').value,
+                experience: parseInt(document.getElementById('teacher-experience').value),
+                salary: parseFloat(document.getElementById('teacher-salary').value),
+                phone: document.getElementById('teacher-phone').value,
+                email: document.getElementById('teacher-email').value,
+                dateAdded: new Date().toISOString()
+            };
+
+            schoolData.teachers.push(teacher);
+            saveData();
+            updateTeachersList();
+            updateClassTeacherOptions();
+            updateStats();
+            showSuccess(`تم إضافة المعلم ${teacher.name} بنجاح!`);
+            document.getElementById('teacher-form').reset();
+            generateTeacherId();
+        }
+
+        function updateTeachersList() {
+            const container = document.getElementById('teachers-list');
+
+            if (schoolData.teachers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3>لا يوجد معلمين مسجلين</h3>
+                        <p>ابدأ بإضافة المعلمين باستخدام النموذج أعلاه</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div style="margin-bottom: 1rem;">
+                    <button class="btn btn-success" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel"></i>
+                        تصدير Excel
+                    </button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>رقم المعلم</th>
+                            <th>الاسم</th>
+                            <th>الاسم بالإنجليزية</th>
+                            <th>التخصص</th>
+                            <th>الخبرة</th>
+                            <th>الراتب</th>
+                            <th>الهاتف</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            schoolData.teachers.forEach(teacher => {
+                html += `
+                    <tr>
+                        <td>${teacher.id}</td>
+                        <td>${teacher.name}</td>
+                        <td>${teacher.nameEn}</td>
+                        <td>${teacher.subject}</td>
+                        <td>${teacher.experience} سنة</td>
+                        <td>${teacher.salary.toLocaleString()} ريال</td>
+                        <td>${teacher.phone}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteTeacher('${teacher.id}')">
+                                <i class="fas fa-trash"></i>
+                                حذف
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function updateClassTeacherOptions() {
+            const select = document.getElementById('class-teacher');
+            select.innerHTML = '<option value="">اختر المعلم</option>';
+
+            schoolData.teachers.forEach(teacher => {
+                const option = document.createElement('option');
+                option.value = teacher.id;
+                option.textContent = `${teacher.name} - ${teacher.subject}`;
+                select.appendChild(option);
+            });
+        }
+
+        // Class Functions
+        function handleAddClass(e) {
+            e.preventDefault();
+
+            const classData = {
+                id: document.getElementById('class-id').value,
+                name: document.getElementById('class-name').value,
+                level: document.getElementById('class-level').value,
+                capacity: parseInt(document.getElementById('class-capacity').value),
+                teacherId: document.getElementById('class-teacher').value,
+                room: document.getElementById('class-room').value,
+                dateAdded: new Date().toISOString()
+            };
+
+            schoolData.classes.push(classData);
+            saveData();
+            updateClassesList();
+            updateStats();
+            showSuccess(`تم إضافة الفصل ${classData.name} بنجاح!`);
+            document.getElementById('class-form').reset();
+            generateClassId();
+        }
+
+        function updateClassesList() {
+            const container = document.getElementById('classes-list');
+
+            if (schoolData.classes.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-door-open"></i>
+                        </div>
+                        <h3>لا يوجد فصول مسجلة</h3>
+                        <p>ابدأ بإضافة الفصول باستخدام النموذج أعلاه</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الفصل</th>
+                            <th>اسم الفصل</th>
+                            <th>المرحلة</th>
+                            <th>السعة</th>
+                            <th>المعلم المسؤول</th>
+                            <th>رقم الغرفة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            schoolData.classes.forEach(classItem => {
+                const teacher = schoolData.teachers.find(t => t.id === classItem.teacherId);
+                const teacherName = teacher ? teacher.name : 'غير محدد';
+
+                html += `
+                    <tr>
+                        <td>${classItem.id}</td>
+                        <td>${classItem.name}</td>
+                        <td>${classItem.level}</td>
+                        <td>${classItem.capacity}</td>
+                        <td>${teacherName}</td>
+                        <td>${classItem.room || 'غير محدد'}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteClass('${classItem.id}')">
+                                <i class="fas fa-trash"></i>
+                                حذف
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // ID Generation Functions
+        function generateIds() {
+            generateStudentId();
+            generateTeacherId();
+            generateClassId();
+        }
+
+        function generateStudentId() {
+            const year = new Date().getFullYear();
+            const count = schoolData.students.length + 1;
+            const id = `STU${year}${String(count).padStart(4, '0')}`;
+            const field = document.getElementById('student-id');
+            if (field) field.value = id;
+        }
+
+        function generateTeacherId() {
+            const year = new Date().getFullYear();
+            const count = schoolData.teachers.length + 1;
+            const id = `TCH${year}${String(count).padStart(4, '0')}`;
+            const field = document.getElementById('teacher-id');
+            if (field) field.value = id;
+        }
+
+        function generateClassId() {
+            const year = new Date().getFullYear();
+            const count = schoolData.classes.length + 1;
+            const id = `CLS${year}${String(count).padStart(4, '0')}`;
+            const field = document.getElementById('class-id');
+            if (field) field.value = id;
+        }
+
+        // Statistics Functions
+        function updateStats() {
+            document.getElementById('total-students').textContent = schoolData.students.length;
+            document.getElementById('total-teachers').textContent = schoolData.teachers.length;
+            document.getElementById('total-classes').textContent = schoolData.classes.length;
+
+            const totalRevenue = schoolData.students.reduce((sum, student) => sum + (student.fees || 0), 0);
+            document.getElementById('total-revenue').textContent = totalRevenue.toLocaleString() + ' ريال';
+        }
+
+        // Chart Functions
+        function updateOverviewChart() {
+            if (schoolData.students.length === 0) {
+                return;
+            }
+
+            const gradeData = {};
+            schoolData.students.forEach(student => {
+                gradeData[student.grade] = (gradeData[student.grade] || 0) + 1;
+            });
+
+            const data = [{
+                x: Object.keys(gradeData),
+                y: Object.values(gradeData),
+                type: 'bar',
+                marker: {
+                    color: 'rgba(37, 99, 235, 0.8)',
+                    line: {
+                        color: 'rgba(37, 99, 235, 1)',
+                        width: 2
+                    }
+                },
+                name: 'عدد الطلاب'
+            }];
+
+            const layout = {
+                title: {
+                    text: 'توزيع الطلاب حسب الصف',
+                    font: { size: 18, family: 'Cairo, sans-serif' }
+                },
+                xaxis: {
+                    title: 'الصف',
+                    font: { family: 'Cairo, sans-serif' }
+                },
+                yaxis: {
+                    title: 'عدد الطلاب',
+                    font: { family: 'Cairo, sans-serif' }
+                },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: { family: 'Cairo, sans-serif' }
+            };
+
+            Plotly.newPlot('overview-chart', data, layout, {responsive: true});
+        }
+
+        function updateReportsChart() {
+            if (schoolData.students.length === 0 && schoolData.teachers.length === 0) {
+                return;
+            }
+
+            const data = [{
+                values: [schoolData.students.length, schoolData.teachers.length, schoolData.classes.length],
+                labels: ['الطلاب', 'المعلمين', 'الفصول'],
+                type: 'pie',
+                marker: {
+                    colors: ['#3b82f6', '#10b981', '#f59e0b']
+                }
+            }];
+
+            const layout = {
+                title: {
+                    text: 'إحصائيات المدرسة',
+                    font: { size: 18, family: 'Cairo, sans-serif' }
+                },
+                font: { family: 'Cairo, sans-serif' }
+            };
+
+            Plotly.newPlot('reports-chart', data, layout, {responsive: true});
+        }
+
+        // Delete Functions
+        function deleteStudent(id) {
+            if (confirm('هل أنت متأكد من حذف هذا الطالب؟')) {
+                schoolData.students = schoolData.students.filter(student => student.id !== id);
+                saveData();
+                updateStudentsList();
+                updateStats();
+                showSuccess('تم حذف الطالب بنجاح');
+            }
+        }
+
+        function deleteTeacher(id) {
+            if (confirm('هل أنت متأكد من حذف هذا المعلم؟')) {
+                schoolData.teachers = schoolData.teachers.filter(teacher => teacher.id !== id);
+                saveData();
+                updateTeachersList();
+                updateClassTeacherOptions();
+                updateStats();
+                showSuccess('تم حذف المعلم بنجاح');
+            }
+        }
+
+        function deleteClass(id) {
+            if (confirm('هل أنت متأكد من حذف هذا الفصل؟')) {
+                schoolData.classes = schoolData.classes.filter(classItem => classItem.id !== id);
+                saveData();
+                updateClassesList();
+                updateStats();
+                showSuccess('تم حذف الفصل بنجاح');
+            }
+        }
+
+        // Export Functions
+        function exportToExcel() {
+            if (typeof XLSX === 'undefined') {
+                showError('مكتبة Excel غير متوفرة');
+                return;
+            }
+
+            const wb = XLSX.utils.book_new();
+
+            if (schoolData.students.length > 0) {
+                const studentsWS = XLSX.utils.json_to_sheet(schoolData.students);
+                XLSX.utils.book_append_sheet(wb, studentsWS, "Students");
+            }
+
+            if (schoolData.teachers.length > 0) {
+                const teachersWS = XLSX.utils.json_to_sheet(schoolData.teachers);
+                XLSX.utils.book_append_sheet(wb, teachersWS, "Teachers");
+            }
+
+            if (schoolData.classes.length > 0) {
+                const classesWS = XLSX.utils.json_to_sheet(schoolData.classes);
+                XLSX.utils.book_append_sheet(wb, classesWS, "Classes");
+            }
+
+            XLSX.writeFile(wb, `International_School_Data_${new Date().toISOString().split('T')[0]}.xlsx`);
+            showSuccess('تم تصدير البيانات إلى Excel بنجاح');
+        }
+
+        function exportToPDF() {
+            window.print();
+            showSuccess('تم فتح نافذة الطباعة');
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        // Utility Functions
+        function saveData() {
+            localStorage.setItem('schoolSystemData', JSON.stringify(schoolData));
+        }
+
+        function showSuccess(message) {
+            showMessage(message, 'success');
+        }
+
+        function showMessage(message, type) {
+            const container = document.getElementById('messages-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'success' ? 'success-msg' : 'error-msg';
+
+            const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
+            messageDiv.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(messageDiv);
+
+            setTimeout(() => {
+                if (container.contains(messageDiv)) {
+                    container.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

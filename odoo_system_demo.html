@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 نظام الإدارة المتكامل | Integrated Management System</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #714b67 0%, #5c4b7c 50%, #4a5d7a 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .header h1 {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h2 {
+            font-size: 1.3em;
+            font-weight: 300;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 0.5rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 1rem 2rem;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            min-width: 120px;
+            margin: 2px;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .content {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 1rem 0;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(102, 126, 234, 0.6);
+        }
+
+        .metric-card .icon {
+            font-size: 3em;
+            margin-bottom: 1rem;
+            display: block;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .metric-card h3 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .metric-card p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .chart-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .btn-3d {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            margin: 0.5rem;
+        }
+
+        .btn-3d:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .success-msg {
+            background: linear-gradient(145deg, #10b981, #059669);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .form-group {
+            margin: 1rem 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .metric-card h3 {
+                font-size: 2em;
+            }
+            
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏢 نظام الإدارة المتكامل</h1>
+            <h2>حلول أعمال شاملة مع تقنية ثلاثية الأبعاد</h2>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showTab('dashboard')">🏠 لوحة التحكم</div>
+            <div class="nav-tab" onclick="showTab('accounting')">💰 المحاسبة</div>
+            <div class="nav-tab" onclick="showTab('sales')">📈 المبيعات</div>
+            <div class="nav-tab" onclick="showTab('crm')">👥 العملاء</div>
+            <div class="nav-tab" onclick="showTab('inventory')">📦 المخزون</div>
+            <div class="nav-tab" onclick="showTab('hr')">👨‍💼 الموارد البشرية</div>
+            <div class="nav-tab" onclick="showTab('reports')">📊 التقارير</div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="content">
+                <h2>🏠 لوحة التحكم الرئيسية</h2>
+                
+                <!-- KPI Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="icon">💰</span>
+                        <h3>155,000</h3>
+                        <p>إجمالي المبيعات<br>Total Sales</p>
+                    </div>
+                    <div class="metric-card">
+                        <span class="icon">👥</span>
+                        <h3>3</h3>
+                        <p>العملاء<br>Customers</p>
+                    </div>
+                    <div class="metric-card">
+                        <span class="icon">📦</span>
+                        <h3>4</h3>
+                        <p>المنتجات<br>Products</p>
+                    </div>
+                    <div class="metric-card">
+                        <span class="icon">👨‍💼</span>
+                        <h3>4</h3>
+                        <p>الموظفين<br>Employees</p>
+                    </div>
+                </div>
+
+                <!-- 3D Chart -->
+                <div class="chart-container">
+                    <h3>📊 التحليلات ثلاثية الأبعاد</h3>
+                    <div id="dashboard-3d-chart" style="height: 500px;"></div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="content">
+                    <h3>⚡ إجراءات سريعة</h3>
+                    <button class="btn-3d" onclick="showSuccess('تم فتح نموذج إضافة عميل جديد')">إضافة عميل جديد</button>
+                    <button class="btn-3d" onclick="showSuccess('تم فتح نموذج إنشاء فاتورة جديدة')">إنشاء فاتورة</button>
+                    <button class="btn-3d" onclick="showSuccess('تم فتح نموذج إضافة منتج جديد')">إضافة منتج</button>
+                    <button class="btn-3d" onclick="showSuccess('تم إنشاء التقرير السريع')">تقرير سريع</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accounting Tab -->
+        <div id="accounting" class="tab-content">
+            <div class="content">
+                <h2>💰 نظام المحاسبة</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>2,050,000</h3>
+                        <p>إجمالي الأصول<br>Total Assets</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>150,000</h3>
+                        <p>إجمالي الخصوم<br>Total Liabilities</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>1,000,000</h3>
+                        <p>رأس المال<br>Equity</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>800,000</h3>
+                        <p>الإيرادات<br>Revenue</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>📊 شجرة الحسابات</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الحساب</th>
+                                <th>اسم الحساب</th>
+                                <th>نوع الحساب</th>
+                                <th>الرصيد</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1001</td>
+                                <td>النقدية</td>
+                                <td>الأصول المتداولة</td>
+                                <td>500,000.00 ريال</td>
+                            </tr>
+                            <tr>
+                                <td>1002</td>
+                                <td>البنك</td>
+                                <td>الأصول المتداولة</td>
+                                <td>1,000,000.00 ريال</td>
+                            </tr>
+                            <tr>
+                                <td>1101</td>
+                                <td>العملاء</td>
+                                <td>الأصول المتداولة</td>
+                                <td>250,000.00 ريال</td>
+                            </tr>
+                            <tr>
+                                <td>2001</td>
+                                <td>الموردين</td>
+                                <td>الخصوم المتداولة</td>
+                                <td>150,000.00 ريال</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Tab -->
+        <div id="sales" class="tab-content">
+            <div class="content">
+                <h2>📈 إدارة المبيعات</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>3</h3>
+                        <p>إجمالي الطلبات<br>Total Orders</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>2</h3>
+                        <p>الطلبات المؤكدة<br>Confirmed Orders</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>155,000</h3>
+                        <p>قيمة المبيعات<br>Sales Value</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>📋 طلبات المبيعات</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>العميل</th>
+                                <th>التاريخ</th>
+                                <th>المبلغ</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SO001</td>
+                                <td>شركة الأمل التجارية</td>
+                                <td>2024-01-15</td>
+                                <td>50,000.00 ريال</td>
+                                <td>مؤكد</td>
+                            </tr>
+                            <tr>
+                                <td>SO002</td>
+                                <td>مؤسسة النجاح</td>
+                                <td>2024-01-16</td>
+                                <td>30,000.00 ريال</td>
+                                <td>مسودة</td>
+                            </tr>
+                            <tr>
+                                <td>SO003</td>
+                                <td>شركة التطوير الحديث</td>
+                                <td>2024-01-17</td>
+                                <td>75,000.00 ريال</td>
+                                <td>مؤكد</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- CRM Tab -->
+        <div id="crm" class="tab-content">
+            <div class="content">
+                <h2>👥 إدارة العملاء</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>3</h3>
+                        <p>إجمالي العملاء<br>Total Customers</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>3</h3>
+                        <p>العملاء النشطين<br>Active Customers</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>75,000</h3>
+                        <p>إجمالي المستحقات<br>Total Receivables</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>👥 قائمة العملاء</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم العميل</th>
+                                <th>اسم العميل</th>
+                                <th>الهاتف</th>
+                                <th>الرصيد</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>C001</td>
+                                <td>شركة الأمل التجارية</td>
+                                <td>+966501234567</td>
+                                <td>25,000.00 ريال</td>
+                                <td>نشط</td>
+                            </tr>
+                            <tr>
+                                <td>C002</td>
+                                <td>مؤسسة النجاح</td>
+                                <td>+966507654321</td>
+                                <td>15,000.00 ريال</td>
+                                <td>نشط</td>
+                            </tr>
+                            <tr>
+                                <td>C003</td>
+                                <td>شركة التطوير الحديث</td>
+                                <td>+966512345678</td>
+                                <td>35,000.00 ريال</td>
+                                <td>نشط</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Tab -->
+        <div id="inventory" class="tab-content">
+            <div class="content">
+                <h2>📦 إدارة المخزون</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>4</h3>
+                        <p>إجمالي المنتجات<br>Total Products</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>205</h3>
+                        <p>إجمالي الكمية<br>Total Quantity</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>1,395,000</h3>
+                        <p>قيمة المخزون<br>Inventory Value</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>1</h3>
+                        <p>منتجات قليلة<br>Low Stock Items</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>📋 قائمة المنتجات</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>كود المنتج</th>
+                                <th>اسم المنتج</th>
+                                <th>الفئة</th>
+                                <th>الكمية</th>
+                                <th>السعر</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>P001</td>
+                                <td>لابتوب Dell XPS</td>
+                                <td>إلكترونيات</td>
+                                <td>50</td>
+                                <td>4,500.00 ريال</td>
+                            </tr>
+                            <tr>
+                                <td>P002</td>
+                                <td>طابعة HP LaserJet</td>
+                                <td>إلكترونيات</td>
+                                <td>25</td>
+                                <td>1,200.00 ريال</td>
+                            </tr>
+                            <tr>
+                                <td>P003</td>
+                                <td>كرسي مكتبي</td>
+                                <td>أثاث</td>
+                                <td>100</td>
+                                <td>800.00 ريال</td>
+                            </tr>
+                            <tr>
+                                <td>P004</td>
+                                <td>مكتب خشبي</td>
+                                <td>أثاث</td>
+                                <td>30</td>
+                                <td>2,500.00 ريال</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- HR Tab -->
+        <div id="hr" class="tab-content">
+            <div class="content">
+                <h2>👨‍💼 إدارة الموارد البشرية</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>4</h3>
+                        <p>إجمالي الموظفين<br>Total Employees</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>37,500</h3>
+                        <p>إجمالي الرواتب<br>Total Payroll</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>9,375</h3>
+                        <p>متوسط الراتب<br>Average Salary</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>4</h3>
+                        <p>الأقسام<br>Departments</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>👥 قائمة الموظفين</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الموظف</th>
+                                <th>الاسم</th>
+                                <th>القسم</th>
+                                <th>المنصب</th>
+                                <th>الراتب</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>E001</td>
+                                <td>أحمد محمد علي</td>
+                                <td>المحاسبة</td>
+                                <td>محاسب أول</td>
+                                <td>8,000.00 ريال</td>
+                            </tr>
+                            <tr>
+                                <td>E002</td>
+                                <td>فاطمة أحمد سعد</td>
+                                <td>المبيعات</td>
+                                <td>مدير مبيعات</td>
+                                <td>12,000.00 ريال</td>
+                            </tr>
+                            <tr>
+                                <td>E003</td>
+                                <td>خالد عبدالله محمد</td>
+                                <td>تقنية المعلومات</td>
+                                <td>مطور برمجيات</td>
+                                <td>10,000.00 ريال</td>
+                            </tr>
+                            <tr>
+                                <td>E004</td>
+                                <td>نورا سعد العتيبي</td>
+                                <td>الموارد البشرية</td>
+                                <td>أخصائي موارد بشرية</td>
+                                <td>7,500.00 ريال</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <div class="content">
+                <h2>📊 التقارير المتقدمة</h2>
+                
+                <div class="grid-2">
+                    <div>
+                        <h3>📋 اختيار التقرير</h3>
+                        <div class="form-group">
+                            <label>نوع التقرير</label>
+                            <select id="reportType">
+                                <option>تقرير المبيعات ثلاثي الأبعاد</option>
+                                <option>تقرير المخزون التفاعلي</option>
+                                <option>تقرير الموارد البشرية</option>
+                                <option>التحليل المالي الشامل</option>
+                                <option>تقرير العملاء البصري</option>
+                            </select>
+                        </div>
+                        <button class="btn-3d" onclick="generateReport()">إنشاء التقرير</button>
+                    </div>
+                    <div>
+                        <h3>📈 معاينة التقرير</h3>
+                        <div id="report-preview" class="chart-container">
+                            <div class="loading">
+                                <span class="spinner"></span>
+                                اختر نوع التقرير وانقر "إنشاء التقرير"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Message Container -->
+        <div id="success-container"></div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked nav tab
+            event.target.classList.add('active');
+            
+            // Load specific content for the tab
+            if (tabName === 'dashboard') {
+                loadDashboard3D();
+            }
+        }
+
+        // Load 3D dashboard chart
+        function loadDashboard3D() {
+            const data = [{
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [15000, 18000, 22000, 19000, 25000, 28000, 24000, 30000, 27000, 32000],
+                z: [5000, 6000, 7500, 6500, 8500, 9500, 8000, 10000, 9000, 11000],
+                mode: 'markers+lines',
+                type: 'scatter3d',
+                marker: {
+                    size: 8,
+                    color: [5000, 6000, 7500, 6500, 8500, 9500, 8000, 10000, 9000, 11000],
+                    colorscale: 'Viridis',
+                    showscale: true,
+                    colorbar: {title: "الأرباح"}
+                },
+                line: {
+                    color: 'rgb(102, 126, 234)',
+                    width: 6
+                },
+                name: 'اتجاه المبيعات'
+            }];
+
+            const layout = {
+                title: 'اتجاه المبيعات ثلاثي الأبعاد',
+                scene: {
+                    xaxis: {title: 'الأيام'},
+                    yaxis: {title: 'المبيعات'},
+                    zaxis: {title: 'الأرباح'},
+                    bgcolor: 'rgba(0,0,0,0)',
+                    camera: {
+                        eye: {x: 1.2, y: 1.2, z: 1.2}
+                    }
+                },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                height: 500
+            };
+
+            Plotly.newPlot('dashboard-3d-chart', data, layout);
+        }
+
+        // Generate report function
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            const previewDiv = document.getElementById('report-preview');
+            
+            previewDiv.innerHTML = '<div class="loading"><span class="spinner"></span>جاري إنشاء التقرير...</div>';
+            
+            setTimeout(() => {
+                if (reportType.includes('المبيعات')) {
+                    generateSalesReport();
+                } else if (reportType.includes('المخزون')) {
+                    generateInventoryReport();
+                } else if (reportType.includes('الموارد البشرية')) {
+                    generateHRReport();
+                } else if (reportType.includes('المالي')) {
+                    generateFinancialReport();
+                } else {
+                    generateCustomerReport();
+                }
+            }, 1500);
+        }
+
+        function generateSalesReport() {
+            const data = [{
+                x: ['شركة الأمل', 'مؤسسة النجاح', 'شركة التطوير'],
+                y: [50000, 30000, 75000],
+                z: [15000, 9000, 22500],
+                type: 'scatter3d',
+                mode: 'markers',
+                marker: {
+                    size: 12,
+                    color: [50000, 30000, 75000],
+                    colorscale: 'Blues'
+                }
+            }];
+
+            const layout = {
+                title: 'تقرير المبيعات ثلاثي الأبعاد',
+                scene: {
+                    xaxis: {title: 'العملاء'},
+                    yaxis: {title: 'المبيعات'},
+                    zaxis: {title: 'الأرباح'}
+                },
+                height: 400
+            };
+
+            Plotly.newPlot('report-preview', data, layout);
+        }
+
+        function generateInventoryReport() {
+            const data = [{
+                x: [50, 25, 100, 30],
+                y: [4500, 1200, 800, 2500],
+                z: [3500, 900, 600, 1800],
+                text: ['لابتوب Dell', 'طابعة HP', 'كرسي مكتبي', 'مكتب خشبي'],
+                type: 'scatter3d',
+                mode: 'markers+text',
+                marker: {
+                    size: 10,
+                    color: [50, 25, 100, 30],
+                    colorscale: 'RdYlBu'
+                }
+            }];
+
+            const layout = {
+                title: 'تحليل المخزون ثلاثي الأبعاد',
+                scene: {
+                    xaxis: {title: 'الكمية'},
+                    yaxis: {title: 'السعر'},
+                    zaxis: {title: 'التكلفة'}
+                },
+                height: 400
+            };
+
+            Plotly.newPlot('report-preview', data, layout);
+        }
+
+        function generateHRReport() {
+            const data = [{
+                x: [1, 1, 1, 1],
+                y: [8000, 12000, 10000, 7500],
+                z: [1, 2, 3, 4],
+                text: ['أحمد محمد', 'فاطمة أحمد', 'خالد عبدالله', 'نورا سعد'],
+                type: 'scatter3d',
+                mode: 'markers+text',
+                marker: {
+                    size: 15,
+                    color: [8000, 12000, 10000, 7500],
+                    colorscale: 'Plasma'
+                }
+            }];
+
+            const layout = {
+                title: 'تحليل الرواتب ثلاثي الأبعاد',
+                scene: {
+                    xaxis: {title: 'القسم'},
+                    yaxis: {title: 'الراتب'},
+                    zaxis: {title: 'المستوى'}
+                },
+                height: 400
+            };
+
+            Plotly.newPlot('report-preview', data, layout);
+        }
+
+        function generateFinancialReport() {
+            const data = [{
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                y: [100000, 105000, 98000, 110000, 115000, 108000, 120000, 125000, 118000, 130000, 135000, 140000],
+                z: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                type: 'scatter3d',
+                mode: 'lines+markers',
+                line: {color: 'green', width: 8},
+                marker: {size: 8},
+                name: 'الإيرادات'
+            }, {
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                y: [70000, 73000, 68000, 75000, 78000, 72000, 80000, 82000, 76000, 85000, 88000, 90000],
+                z: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+                type: 'scatter3d',
+                mode: 'lines+markers',
+                line: {color: 'red', width: 8},
+                marker: {size: 8},
+                name: 'المصروفات'
+            }];
+
+            const layout = {
+                title: 'التحليل المالي السنوي',
+                scene: {
+                    xaxis: {title: 'الشهر'},
+                    yaxis: {title: 'المبلغ'},
+                    zaxis: {title: 'الفئة'}
+                },
+                height: 400
+            };
+
+            Plotly.newPlot('report-preview', data, layout);
+        }
+
+        function generateCustomerReport() {
+            const data = [{
+                x: [1, 2, 3],
+                y: [25000, 15000, 35000],
+                z: [1, 1, 1],
+                text: ['شركة الأمل', 'مؤسسة النجاح', 'شركة التطوير'],
+                type: 'scatter3d',
+                mode: 'markers+text',
+                marker: {
+                    size: 12,
+                    color: [25000, 15000, 35000],
+                    colorscale: 'Blues'
+                }
+            }];
+
+            const layout = {
+                title: 'تحليل أرصدة العملاء',
+                scene: {
+                    xaxis: {title: 'رقم العميل'},
+                    yaxis: {title: 'الرصيد'},
+                    zaxis: {title: 'المستوى'}
+                },
+                height: 400
+            };
+
+            Plotly.newPlot('report-preview', data, layout);
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const container = document.getElementById('success-container');
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-msg';
+            successDiv.textContent = message;
+            
+            container.appendChild(successDiv);
+            
+            setTimeout(() => {
+                container.removeChild(successDiv);
+            }, 3000);
+        }
+
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboard3D();
+        });
+    </script>
+</body>
+</html>

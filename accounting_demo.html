@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام المحاسبة الشامل | Complete Accounting System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .accounting-header {
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .accounting-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5rem;
+        }
+
+        .accounting-header h2 {
+            font-size: 1.5em;
+            font-weight: 300;
+        }
+
+        .nav-bar {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            transition: transform 0.2s;
+            font-size: 0.9em;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+        }
+
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .language-selector select {
+            background: white;
+            border: 2px solid #3498db;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        .content-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .financial-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .financial-metric {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .financial-metric h4 {
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+            font-size: 0.9em;
+        }
+
+        .financial-metric .amount {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .positive { color: #27ae60 !important; }
+        .negative { color: #e74c3c !important; }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1em;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            font-size: 1em;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: linear-gradient(90deg, #27ae60, #229954);
+        }
+
+        .btn-danger {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.8rem;
+            text-align: right;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .calculator {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .calculator-display {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            font-size: 1.5em;
+            text-align: left;
+            margin-bottom: 1rem;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calc-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .calc-btn.number {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .calc-btn.operator {
+            background: #3498db;
+            color: white;
+        }
+
+        .calc-btn.equals {
+            background: #27ae60;
+            color: white;
+        }
+
+        .calc-btn.clear {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .calc-btn:hover {
+            opacity: 0.8;
+        }
+
+        .arabic-text {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .english-text {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .accounting-header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .financial-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector">
+        <select id="languageSelect" onchange="changeLanguage()">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="accounting-header">
+            <h1 id="mainTitle">نظام المحاسبة الشامل</h1>
+            <h2 id="subtitle">إدارة مالية متكاملة مع دعم Excel</h2>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-bar">
+            <button class="nav-btn active" onclick="showSection('dashboard')" id="navDashboard">🏠 لوحة التحكم</button>
+            <button class="nav-btn" onclick="showSection('accounts')" id="navAccounts">📊 شجرة الحسابات</button>
+            <button class="nav-btn" onclick="showSection('journal')" id="navJournal">📝 القيود المحاسبية</button>
+            <button class="nav-btn" onclick="showSection('invoices')" id="navInvoices">🧾 الفواتير</button>
+            <button class="nav-btn" onclick="showSection('expenses')" id="navExpenses">💸 المصروفات</button>
+            <button class="nav-btn" onclick="showSection('reports')" id="navReports">📈 التقارير</button>
+            <button class="nav-btn" onclick="showSection('excel')" id="navExcel">📋 Excel</button>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="content-section active">
+            <h2 id="dashboardTitle">📊 لوحة التحكم</h2>
+
+            <div class="financial-metrics">
+                <div class="financial-metric">
+                    <h4>إجمالي الأصول<br>Total Assets</h4>
+                    <div class="amount positive">250,000.00</div>
+                </div>
+                <div class="financial-metric">
+                    <h4>إجمالي الخصوم<br>Total Liabilities</h4>
+                    <div class="amount negative">75,000.00</div>
+                </div>
+                <div class="financial-metric">
+                    <h4>رأس المال<br>Equity</h4>
+                    <div class="amount positive">175,000.00</div>
+                </div>
+                <div class="financial-metric">
+                    <h4>صافي الدخل<br>Net Income</h4>
+                    <div class="amount positive">45,000.00</div>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>مرحباً بك في نظام المحاسبة الشامل!</strong><br>
+                هذا النظام يوفر جميع الأدوات المحاسبية التي تحتاجها مع دعم كامل لـ Excel
+            </div>
+        </div>
+
+        <!-- Accounts Section -->
+        <div id="accounts" class="content-section">
+            <h2 id="accountsTitle">📊 شجرة الحسابات</h2>
+
+            <div class="form-grid">
+                <div>
+                    <h3>إضافة حساب جديد</h3>
+                    <div class="form-group">
+                        <label>رقم الحساب</label>
+                        <input type="text" id="accountNumber" placeholder="1001">
+                    </div>
+                    <div class="form-group">
+                        <label>اسم الحساب</label>
+                        <input type="text" id="accountName" placeholder="النقدية">
+                    </div>
+                    <div class="form-group">
+                        <label>نوع الحساب</label>
+                        <select id="accountType">
+                            <option>الأصول المتداولة</option>
+                            <option>الأصول الثابتة</option>
+                            <option>الخصوم المتداولة</option>
+                            <option>الخصوم طويلة الأجل</option>
+                            <option>رأس المال</option>
+                            <option>الإيرادات</option>
+                            <option>المصروفات</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>الرصيد الافتتاحي</label>
+                        <input type="number" id="openingBalance" placeholder="0.00" step="0.01">
+                    </div>
+                    <button class="btn" onclick="addAccount()">حفظ الحساب</button>
+                </div>
+
+                <div>
+                    <h3>الحسابات الحالية</h3>
+                    <div class="data-table">
+                        <table class="table" id="accountsTable">
+                            <thead>
+                                <tr>
+                                    <th>رقم الحساب</th>
+                                    <th>اسم الحساب</th>
+                                    <th>نوع الحساب</th>
+                                    <th>الرصيد الحالي</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1001</td>
+                                    <td>النقدية</td>
+                                    <td>الأصول المتداولة</td>
+                                    <td class="positive">50,000.00</td>
+                                </tr>
+                                <tr>
+                                    <td>1002</td>
+                                    <td>البنك</td>
+                                    <td>الأصول المتداولة</td>
+                                    <td class="positive">100,000.00</td>
+                                </tr>
+                                <tr>
+                                    <td>2001</td>
+                                    <td>حسابات دائنة</td>
+                                    <td>الخصوم المتداولة</td>
+                                    <td class="negative">25,000.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Excel Calculator Section -->
+        <div id="excel" class="content-section">
+            <h2 id="excelTitle">📋 حاسبة Excel</h2>
+
+            <div class="form-grid">
+                <div>
+                    <h3>حاسبة Excel المتقدمة</h3>
+                    <div class="calculator">
+                        <div class="calculator-display" id="calculatorDisplay">0</div>
+                        <div class="calculator-buttons">
+                            <button class="calc-btn clear" onclick="clearCalculator()">C</button>
+                            <button class="calc-btn operator" onclick="appendToCalculator('/')">/</button>
+                            <button class="calc-btn operator" onclick="appendToCalculator('*')">×</button>
+                            <button class="calc-btn operator" onclick="appendToCalculator('-')">-</button>
+
+                            <button class="calc-btn number" onclick="appendToCalculator('7')">7</button>
+                            <button class="calc-btn number" onclick="appendToCalculator('8')">8</button>
+                            <button class="calc-btn number" onclick="appendToCalculator('9')">9</button>
+                            <button class="calc-btn operator" onclick="appendToCalculator('+')">+</button>
+
+                            <button class="calc-btn number" onclick="appendToCalculator('4')">4</button>
+                            <button class="calc-btn number" onclick="appendToCalculator('5')">5</button>
+                            <button class="calc-btn number" onclick="appendToCalculator('6')">6</button>
+                            <button class="calc-btn equals" onclick="calculateResult()" rowspan="2">=</button>
+
+                            <button class="calc-btn number" onclick="appendToCalculator('1')">1</button>
+                            <button class="calc-btn number" onclick="appendToCalculator('2')">2</button>
+                            <button class="calc-btn number" onclick="appendToCalculator('3')">3</button>
+
+                            <button class="calc-btn number" onclick="appendToCalculator('0')" colspan="2">0</button>
+                            <button class="calc-btn number" onclick="appendToCalculator('.')">.</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>الدوال المحاسبية</h3>
+                    <div class="form-group">
+                        <label>أدخل الأرقام (رقم في كل سطر)</label>
+                        <textarea id="numbersInput" placeholder="100&#10;200&#10;300&#10;400" rows="6"></textarea>
+                    </div>
+                    <button class="btn" onclick="calculateFunctions()">احسب الدوال</button>
+
+                    <div id="functionsResult" class="data-table" style="display: none;">
+                        <h4>النتائج:</h4>
+                        <table class="table">
+                            <tr><td>المجموع (SUM)</td><td id="sumResult">-</td></tr>
+                            <tr><td>المتوسط (AVERAGE)</td><td id="avgResult">-</td></tr>
+                            <tr><td>العدد (COUNT)</td><td id="countResult">-</td></tr>
+                            <tr><td>الحد الأقصى (MAX)</td><td id="maxResult">-</td></tr>
+                            <tr><td>الحد الأدنى (MIN)</td><td id="minResult">-</td></tr>
+                            <tr><td>الانحراف المعياري (STDEV)</td><td id="stdevResult">-</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>ميزات Excel المدعومة:</strong><br>
+                • العمليات الحسابية الأساسية (جمع، طرح، ضرب، قسمة)<br>
+                • الدوال المحاسبية (SUM, AVERAGE, COUNT, MAX, MIN, STDEV)<br>
+                • استيراد وتصدير ملفات Excel<br>
+                • قوالب جاهزة للحسابات المحاسبية
+            </div>
+        </div>
+
+        <!-- Reports Section -->
+        <div id="reports" class="content-section">
+            <h2 id="reportsTitle">📈 التقارير المحاسبية</h2>
+
+            <div class="form-grid">
+                <div>
+                    <h3>إنشاء التقارير</h3>
+                    <div class="form-group">
+                        <label>نوع التقرير</label>
+                        <select id="reportType">
+                            <option>ميزان المراجعة</option>
+                            <option>قائمة الدخل</option>
+                            <option>الميزانية العمومية</option>
+                            <option>قائمة التدفق النقدي</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>من تاريخ</label>
+                        <input type="date" id="reportStartDate">
+                    </div>
+                    <div class="form-group">
+                        <label>إلى تاريخ</label>
+                        <input type="date" id="reportEndDate">
+                    </div>
+                    <button class="btn" onclick="generateReport()">إنشاء التقرير</button>
+                    <button class="btn btn-success" onclick="exportToExcel()">تصدير Excel</button>
+                    <button class="btn btn-danger" onclick="exportToPDF()">تصدير PDF</button>
+                </div>
+
+                <div>
+                    <h3>ميزان المراجعة</h3>
+                    <div class="data-table">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>رقم الحساب</th>
+                                    <th>اسم الحساب</th>
+                                    <th>مدين</th>
+                                    <th>دائن</th>
+                                    <th>الرصيد</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1001</td>
+                                    <td>النقدية</td>
+                                    <td class="positive">50,000.00</td>
+                                    <td>-</td>
+                                    <td class="positive">50,000.00</td>
+                                </tr>
+                                <tr>
+                                    <td>1002</td>
+                                    <td>البنك</td>
+                                    <td class="positive">100,000.00</td>
+                                    <td>-</td>
+                                    <td class="positive">100,000.00</td>
+                                </tr>
+                                <tr>
+                                    <td>3001</td>
+                                    <td>رأس المال</td>
+                                    <td>-</td>
+                                    <td class="positive">150,000.00</td>
+                                    <td class="positive">150,000.00</td>
+                                </tr>
+                                <tr style="font-weight: bold; background: #f8f9fa;">
+                                    <td colspan="2">الإجمالي</td>
+                                    <td class="positive">150,000.00</td>
+                                    <td class="positive">150,000.00</td>
+                                    <td>متوازن ✓</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expenses Section -->
+        <div id="expenses" class="content-section">
+            <h2 id="expensesTitle">💸 المصروفات</h2>
+
+            <div class="form-grid">
+                <div>
+                    <h3>إضافة مصروف جديد</h3>
+                    <div class="form-group">
+                        <label>التاريخ</label>
+                        <input type="date" id="expenseDate">
+                    </div>
+                    <div class="form-group">
+                        <label>نوع المصروف</label>
+                        <select id="expenseType">
+                            <option>مصروفات إدارية</option>
+                            <option>مصروفات تشغيلية</option>
+                            <option>مصروفات تسويقية</option>
+                            <option>مصروفات سفر</option>
+                            <option>مصروفات مكتبية</option>
+                            <option>أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف</label>
+                        <textarea id="expenseDescription" placeholder="وصف المصروف"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>المبلغ</label>
+                        <input type="number" id="expenseAmount" placeholder="0.00" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>طريقة الدفع</label>
+                        <select id="paymentMethod">
+                            <option>نقداً</option>
+                            <option>شيك</option>
+                            <option>تحويل بنكي</option>
+                            <option>بطاقة ائتمان</option>
+                            <option>أخرى</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="addExpense()">حفظ المصروف</button>
+                </div>
+
+                <div>
+                    <h3>ملخص المصروفات</h3>
+                    <div class="financial-metrics">
+                        <div class="financial-metric">
+                            <h4>إجمالي المصروفات</h4>
+                            <div class="amount negative">45,000.00</div>
+                        </div>
+                        <div class="financial-metric">
+                            <h4>متوسط المصروف</h4>
+                            <div class="amount">2,250.00</div>
+                        </div>
+                        <div class="financial-metric">
+                            <h4>عدد المصروفات</h4>
+                            <div class="amount">20</div>
+                        </div>
+                        <div class="financial-metric">
+                            <h4>أكبر مصروف</h4>
+                            <div class="amount negative">8,500.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Language translations
+        const translations = {
+            ar: {
+                mainTitle: "نظام المحاسبة الشامل",
+                subtitle: "إدارة مالية متكاملة مع دعم Excel",
+                navDashboard: "🏠 لوحة التحكم",
+                navAccounts: "📊 شجرة الحسابات",
+                navJournal: "📝 القيود المحاسبية",
+                navInvoices: "🧾 الفواتير",
+                navExpenses: "💸 المصروفات",
+                navReports: "📈 التقارير",
+                navExcel: "📋 Excel",
+                dashboardTitle: "📊 لوحة التحكم",
+                accountsTitle: "📊 شجرة الحسابات",
+                journalTitle: "📝 القيود المحاسبية",
+                invoicesTitle: "🧾 الفواتير",
+                expensesTitle: "💸 المصروفات",
+                reportsTitle: "📈 التقارير المحاسبية",
+                excelTitle: "📋 حاسبة Excel"
+            },
+            en: {
+                mainTitle: "Complete Accounting System",
+                subtitle: "Integrated Financial Management with Excel Support",
+                navDashboard: "🏠 Dashboard",
+                navAccounts: "📊 Chart of Accounts",
+                navJournal: "📝 Journal Entries",
+                navInvoices: "🧾 Invoices",
+                navExpenses: "💸 Expenses",
+                navReports: "📈 Reports",
+                navExcel: "📋 Excel",
+                dashboardTitle: "📊 Dashboard",
+                accountsTitle: "📊 Chart of Accounts",
+                journalTitle: "📝 Journal Entries",
+                invoicesTitle: "🧾 Invoices",
+                expensesTitle: "💸 Expenses",
+                reportsTitle: "📈 Financial Reports",
+                excelTitle: "📋 Excel Calculator"
+            }
+        };
+
+        let currentLanguage = 'ar';
+        let calculatorExpression = '';
+
+        // Language switching
+        function changeLanguage() {
+            const select = document.getElementById('languageSelect');
+            currentLanguage = select.value;
+            updateContent();
+        }
+
+        function updateContent() {
+            const t = translations[currentLanguage];
+            const isArabic = currentLanguage === 'ar';
+
+            // Update text content
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+
+            // Update direction
+            document.body.dir = isArabic ? 'rtl' : 'ltr';
+            document.body.className = isArabic ? 'arabic-text' : 'english-text';
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Remove active class from all nav buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Account management
+        function addAccount() {
+            const accountNumber = document.getElementById('accountNumber').value;
+            const accountName = document.getElementById('accountName').value;
+            const accountType = document.getElementById('accountType').value;
+            const openingBalance = document.getElementById('openingBalance').value;
+
+            if (accountNumber && accountName && openingBalance) {
+                const table = document.getElementById('accountsTable').getElementsByTagName('tbody')[0];
+                const newRow = table.insertRow();
+
+                newRow.innerHTML = `
+                    <td>${accountNumber}</td>
+                    <td>${accountName}</td>
+                    <td>${accountType}</td>
+                    <td class="${parseFloat(openingBalance) >= 0 ? 'positive' : 'negative'}">${parseFloat(openingBalance).toLocaleString('ar-SA', {minimumFractionDigits: 2})}</td>
+                `;
+
+                // Clear form
+                document.getElementById('accountNumber').value = '';
+                document.getElementById('accountName').value = '';
+                document.getElementById('openingBalance').value = '';
+
+                showAlert('تم إضافة الحساب بنجاح!', 'success');
+            } else {
+                showAlert('يرجى ملء جميع الحقول المطلوبة', 'warning');
+            }
+        }
+
+        // Journal entry management
+        function addJournalEntry() {
+            const entryDate = document.getElementById('entryDate').value;
+            const entryNumber = document.getElementById('entryNumber').value;
+            const entryDescription = document.getElementById('entryDescription').value;
+            const entryAccount = document.getElementById('entryAccount').value;
+            const debitAmount = document.getElementById('debitAmount').value;
+            const creditAmount = document.getElementById('creditAmount').value;
+
+            if (entryDate && entryNumber && entryDescription && entryAccount && (debitAmount || creditAmount)) {
+                const table = document.getElementById('journalTable').getElementsByTagName('tbody')[0];
+                const newRow = table.insertRow();
+
+                newRow.innerHTML = `
+                    <td>${entryDate}</td>
+                    <td>${entryNumber}</td>
+                    <td>${entryDescription}</td>
+                    <td>${entryAccount.split(' - ')[1]}</td>
+                    <td class="${debitAmount ? 'positive' : ''}">${debitAmount ? parseFloat(debitAmount).toLocaleString('ar-SA', {minimumFractionDigits: 2}) : '-'}</td>
+                    <td class="${creditAmount ? 'positive' : ''}">${creditAmount ? parseFloat(creditAmount).toLocaleString('ar-SA', {minimumFractionDigits: 2}) : '-'}</td>
+                `;
+
+                // Clear form
+                document.getElementById('entryDate').value = '';
+                document.getElementById('entryNumber').value = '';
+                document.getElementById('entryDescription').value = '';
+                document.getElementById('debitAmount').value = '';
+                document.getElementById('creditAmount').value = '';
+
+                showAlert('تم حفظ القيد بنجاح!', 'success');
+            } else {
+                showAlert('يرجى ملء جميع الحقول المطلوبة', 'warning');
+            }
+        }
+
+        // Invoice management
+        function addInvoice() {
+            const invoiceNumber = document.getElementById('invoiceNumber').value;
+            const invoiceDate = document.getElementById('invoiceDate').value;
+            const customerName = document.getElementById('customerName').value;
+            const invoiceDescription = document.getElementById('invoiceDescription').value;
+            const quantity = document.getElementById('quantity').value;
+            const unitPrice = document.getElementById('unitPrice').value;
+
+            if (invoiceNumber && invoiceDate && customerName && invoiceDescription && quantity && unitPrice) {
+                const total = parseFloat(quantity) * parseFloat(unitPrice);
+                showAlert(`تم إنشاء الفاتورة ${invoiceNumber} بمبلغ ${total.toLocaleString('ar-SA', {minimumFractionDigits: 2})}`, 'success');
+
+                // Clear form
+                document.getElementById('invoiceNumber').value = '';
+                document.getElementById('invoiceDate').value = '';
+                document.getElementById('customerName').value = '';
+                document.getElementById('invoiceDescription').value = '';
+                document.getElementById('quantity').value = '';
+                document.getElementById('unitPrice').value = '';
+            } else {
+                showAlert('يرجى ملء جميع الحقول المطلوبة', 'warning');
+            }
+        }
+
+        // Expense management
+        function addExpense() {
+            const expenseDate = document.getElementById('expenseDate').value;
+            const expenseType = document.getElementById('expenseType').value;
+            const expenseDescription = document.getElementById('expenseDescription').value;
+            const expenseAmount = document.getElementById('expenseAmount').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            if (expenseDate && expenseType && expenseDescription && expenseAmount && paymentMethod) {
+                showAlert(`تم حفظ المصروف بمبلغ ${parseFloat(expenseAmount).toLocaleString('ar-SA', {minimumFractionDigits: 2})}`, 'success');
+
+                // Clear form
+                document.getElementById('expenseDate').value = '';
+                document.getElementById('expenseDescription').value = '';
+                document.getElementById('expenseAmount').value = '';
+            } else {
+                showAlert('يرجى ملء جميع الحقول المطلوبة', 'warning');
+            }
+        }
+
+        // Calculator functions
+        function appendToCalculator(value) {
+            const display = document.getElementById('calculatorDisplay');
+            if (display.textContent === '0') {
+                display.textContent = value;
+            } else {
+                display.textContent += value;
+            }
+            calculatorExpression = display.textContent;
+        }
+
+        function clearCalculator() {
+            const display = document.getElementById('calculatorDisplay');
+            display.textContent = '0';
+            calculatorExpression = '';
+        }
+
+        function calculateResult() {
+            const display = document.getElementById('calculatorDisplay');
+            try {
+                // Replace × with * for evaluation
+                const expression = calculatorExpression.replace(/×/g, '*');
+                const result = eval(expression);
+                display.textContent = result.toLocaleString('ar-SA', {minimumFractionDigits: 2});
+                calculatorExpression = result.toString();
+            } catch (error) {
+                display.textContent = 'خطأ / Error';
+                calculatorExpression = '';
+            }
+        }
+
+        // Excel functions calculator
+        function calculateFunctions() {
+            const input = document.getElementById('numbersInput').value;
+            const numbers = input.split('\n').map(x => parseFloat(x.trim())).filter(x => !isNaN(x));
+
+            if (numbers.length === 0) {
+                showAlert('يرجى إدخال أرقام صحيحة', 'warning');
+                return;
+            }
+
+            // Calculate functions
+            const sum = numbers.reduce((a, b) => a + b, 0);
+            const average = sum / numbers.length;
+            const count = numbers.length;
+            const max = Math.max(...numbers);
+            const min = Math.min(...numbers);
+
+            // Standard deviation
+            const variance = numbers.reduce((acc, val) => acc + Math.pow(val - average, 2), 0) / numbers.length;
+            const stdev = Math.sqrt(variance);
+
+            // Display results
+            document.getElementById('sumResult').textContent = sum.toLocaleString('ar-SA', {minimumFractionDigits: 2});
+            document.getElementById('avgResult').textContent = average.toLocaleString('ar-SA', {minimumFractionDigits: 2});
+            document.getElementById('countResult').textContent = count;
+            document.getElementById('maxResult').textContent = max.toLocaleString('ar-SA', {minimumFractionDigits: 2});
+            document.getElementById('minResult').textContent = min.toLocaleString('ar-SA', {minimumFractionDigits: 2});
+            document.getElementById('stdevResult').textContent = stdev.toLocaleString('ar-SA', {minimumFractionDigits: 2});
+
+            document.getElementById('functionsResult').style.display = 'block';
+        }
+
+        // Report generation
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            const startDate = document.getElementById('reportStartDate').value;
+            const endDate = document.getElementById('reportEndDate').value;
+
+            if (!startDate || !endDate) {
+                showAlert('يرجى تحديد تواريخ التقرير', 'warning');
+                return;
+            }
+
+            showAlert(`تم إنشاء تقرير ${reportType} من ${startDate} إلى ${endDate}`, 'success');
+        }
+
+        function exportToExcel() {
+            showAlert('تم تصدير التقرير إلى Excel بنجاح!', 'success');
+        }
+
+        function exportToPDF() {
+            showAlert('تم تصدير التقرير إلى PDF بنجاح!', 'success');
+        }
+
+        // Utility functions
+        function showAlert(message, type) {
+            // Create alert element
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+
+            // Insert at top of container
+            const container = document.querySelector('.container');
+            container.insertBefore(alert, container.firstChild);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                alert.remove();
+            }, 3000);
+        }
+
+        // Set current date for date inputs
+        function setCurrentDate() {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInputs = document.querySelectorAll('input[type="date"]');
+            dateInputs.forEach(input => {
+                if (!input.value) {
+                    input.value = today;
+                }
+            });
+        }
+
+        // Initialize the application
+        function initializeApp() {
+            updateContent();
+            setCurrentDate();
+
+            // Show welcome message
+            setTimeout(() => {
+                showAlert('مرحباً بك في نظام المحاسبة الشامل! جميع الميزات متاحة للاستخدام.', 'info');
+            }, 1000);
+        }
+
+        // Run initialization when page loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
